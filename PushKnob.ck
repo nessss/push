@@ -12,7 +12,7 @@ public class PushKnob{
     
     int myKnob;        // which knob
     
-    int displayLabel;  // whether to display or not
+    int displayLabel;  // whether to display elements or not
     int displayValue;
     int displayCursor;
     int displayText;
@@ -585,25 +585,25 @@ public class PushKnob{
         }
         if(inFocus){
             if(displayCursor)makeCursor(cursorX,cursorY,cStyle);
-            if(displayValue)p.setSubsegment(valX,valY,dValue);
-            if(displayLabel)p.setSubsegment(labelX,labelY,myLabel);
-            if(displayText)p.setSubsegment(textX,textY,myText);
+            if(displayValue)p.subsegment(valX,valY,dValue);
+            if(displayLabel)p.subsegment(labelX,labelY,myLabel);
+            if(displayText)p.subsegment(textX,textY,myText);
             if((selfUpdate)&&(displayCursor|displayValue|displayLabel))p.updateDisplay();
         }
     }
     
     fun void clearValue(){
-        p.setSubsegment(valX,valY,"");
+        p.subsegment(valX,valY,"");
         if(selfUpdate)p.updateDisplay();
     }
     
     fun void clearCursor(){
-        p.setSubsegment(cursorX,cursorY,"");
+        p.subsegment(cursorX,cursorY,"");
         if(selfUpdate)p.updateDisplay();
     }
     
     fun void clearLabel(){
-        p.setSubsegment(labelX,labelY,"");
+        p.subsegment(labelX,labelY,"");
         if(selfUpdate)p.updateDisplay();
     }
     
@@ -633,7 +633,7 @@ public class PushKnob{
                 }
                 cursorThing+"\004"=>cursorThing;
             }
-            p.setSegment(c,r,cursorThing);
+            p.segment(c,r,cursorThing);
             if(selfUpdate)p.updateDisplay();
         }
         else if(style==1){
@@ -655,7 +655,7 @@ public class PushKnob{
                 cursorThing+"\010"=>cursorThing;
                 
             }
-            p.setSegment(c,r,cursorThing);
+            p.segment(c,r,cursorThing);
             if(selfUpdate)p.updateDisplay();
         }else if(style==2){
             if(iPos==0){
@@ -692,7 +692,7 @@ public class PushKnob{
                     }
                 }
             }
-            p.setSubsegment(c,r,cursorThing);
+            p.subsegment(c,r,cursorThing);
             if(selfUpdate)p.updateDisplay();
         }else if(style==3){
             Math.round(myPos*8)$int=>int iPos;
@@ -713,7 +713,7 @@ public class PushKnob{
             if(myPos==1){
                 cursorThing.substring(0,8)=>cursorThing;
             }
-            p.setSubsegment(c,r,cursorThing);
+            p.subsegment(c,r,cursorThing);
             if(selfUpdate)p.updateDisplay();
         }
     }
