@@ -1,0 +1,9 @@
+Machine.add("DataEvent.ck");
+Machine.add("MidiEvent.ck");
+Machine.add("MidiBroadcaster0.1.ck");
+Machine.add("DLP_1.0.ck");
+Machine.add("Push_1.3.ck");
+Machine.add("RhythmClock_2.1.ck");
+//Machine.add("pstep/SubSynth_0.2.ck");
+Machine.add("pstep/PStep_0.0.ck");
+Machine.add("pstep/pushPit_0.0.ck");
