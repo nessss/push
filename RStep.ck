@@ -3,15 +3,15 @@
 public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = cue
     //Variables
     int nSounds, nSteps, nPats, cPat, cSound, pLen, hLen, minPort, moutPort, qL, qR;
-    int muted, cued, focused, onClr, offClr, cursorClr, hiClr; //whats cursor for?
+    int muted, cued, focused, onClr, offClr, cursorClr, hiClr;
     float mPan, mRate, mGain, qGain;
     SndBuf sounds[]; //samples used by this RStep
     Pan2 gBus, mBus, qBus; // generalBus
-    int pats[][]; int firstPad[2]; int stepCCs[]; 
+    int pats[][]; int firstPad[2]; int stepCCs[];
     //Objects
     RhythmClock theClock;
     Push thePush;
-    MidiBroadcaster mB; 
+    MidiBroadcaster mB;
     //Midi
     MidiOut mout;
     MidiMsg msg;
