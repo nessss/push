@@ -43,14 +43,21 @@ public class Push{
     //============= --| INITIALIZER |-- =============
     
     fun void init(){
-        moutInit() @=> mout;
         ccInit();
+        /*
+		for(0 => int i; i<GRID_WIDTH; i++){
+			for(0 => int j; j<GRID_HEIGHT; j++){
+        		<<<grid[i][j]>>>;
+        	}
+        }
+        */
+        moutInit() @=> mout;
         68=>lineLen;
         for(0=>int i;i<lineLen;i++){
             "\040"+=>emptyLine;
         }
         for(0=>int i;i<lines.cap();i++){
-            setLine(i,emptyLine);
+            line(i,emptyLine);
         }
     }
     
@@ -211,7 +218,7 @@ public class Push{
                 if(s==3)lines[l].replace(51,nS);
                 else lines[l].replace(s*17,17,nS);
             }else lines[l].replace(s*17,17,nS.substring(0,17));
-            return getSegment(s,l);
+            return segment(s,l);
         }else return "no segment "+s+" on line "+l;
     }
     
@@ -219,8 +226,8 @@ public class Push{
     fun string subsegment(int s,int l){
         if((l>=0&l<4)&&(s>=0&s<8)){
             if(s%2==0){
-                return getSegment((s*0.5)$int,l).substring(0,8);
-            }else return getSegment((s*0.5)$int,l).substring(9);
+                return segment((s*0.5)$int,l).substring(0,8);
+            }else return segment((s*0.5)$int,l).substring(9);
         }else return "no subsegment "+s+" on line "+l;
     }
     
@@ -230,16 +237,16 @@ public class Push{
                 while(nS.length()<8)" "+=>nS;
                 string seg;
                 if(s%2==0){
-                    getSegment((s*0.5)$int,l)=>seg;
+                    segment((s*0.5)$int,l)=>seg;
                     seg.replace(0,8,nS);
                 }else{
-                    getSegment((s*0.5)$int,l)=>seg;
+                    segment((s*0.5)$int,l)=>seg;
                     seg.replace(9,nS);
                 }
-                setSegment((s*0.5)$int,l,seg);
-                return getSubsegment(s,l);
+                segment((s*0.5)$int,l,seg);
+                return subsegment(s,l);
             }else{ // truncate input string
-                return setSubsegment(s,l,nS.substring(0,8));
+                return subsegment(s,l,nS.substring(0,8));
             }
         }else return "no subsegment "+s+" on line "+l;
     }

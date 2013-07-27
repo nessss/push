@@ -60,6 +60,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         gBus => mBus;
         gBus => qBus;
         
+        thePush.ccInit();
         int tempStepCCs[nSteps] @=> stepCCs; //Array of CCs
         for(0 => int i; i<hLen; i++){
             for(0 => int j; j<nSteps/hLen; j++){
@@ -69,7 +70,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         normalizeSounds();
         //Sporks
         spork ~ play();
-        spork ~ midiIn(minPort);
+        spork ~ midiIn();
     }
     fun void init(MidiBroadcaster m, MidiOut mo, string s[]){
         init(m,mo,0,7,8,8,64,s);
@@ -108,7 +109,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         else <<<"Trigger out of bounds!">>>;
     }
     
-    fun void midiIn(int nPort){
+    fun void midiIn(){
         MidiMsg msg;
         while(mB.mev=>now){
             mB.mev.msg @=> msg;

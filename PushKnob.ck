@@ -112,7 +112,7 @@ public class PushKnob{
         0=>shift;
         
         
-        ip@=>p;
+        ip@=>push;
         
         label(iLabel);
         
