@@ -1,9 +1,9 @@
 //PUSH => ChucK!
-Machine.add("Push/DataEvent.ck");
-Machine.add("Push/MidiEvent.ck");
-Machine.add("Push/MidiBroadcaster.ck");
-Machine.add("Push/RhythmClock.ck");
-Machine.add("Push/Push.ck");
-Machine.add("Push/RStep.ck");
-Machine.add("Push/PushKnob.ck");
-Machine.add("Push/pushStep.ck");
+Machine.add("DataEvent.ck");
+Machine.add("MidiEvent.ck");
+Machine.add("MidiBroadcaster.ck");
+Machine.add("RhythmClock.ck");
+Machine.add("Push.ck");
+Machine.add("RStep.ck");
+Machine.add("PushKnob.ck");
+Machine.add("pushStep.ck");

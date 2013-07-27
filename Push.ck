@@ -26,12 +26,12 @@ public class Push{
     int pbtouch; //0x90; 0xE0 for value
     
     
-    8=>const int GRID_WIDTH;
-    8=>const int GRID_HEIGHT;
-    8=>const int SEL_WIDTH;
-    2=>const int SEL_HEIGHT;
-    11=>const int KNOBS;
-    8=>const int DISPLAY_KNOBS;
+    8=>int GRID_WIDTH;
+    8=>int GRID_HEIGHT;
+    8=>int SEL_WIDTH;
+    2=>int SEL_HEIGHT;
+    11=>int KNOBS;
+    8=>int DISPLAY_KNOBS;
     
     44=>left;
     45=>right;
