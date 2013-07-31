@@ -1,3 +1,7 @@
+// pushRack.ck
+//
+// finger drumming on Ableton Push
+
 Rack theRack;
 string mysounds[8];
 "Push/sounds/kck.wav" => mysounds[0];

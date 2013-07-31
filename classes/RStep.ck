@@ -3,15 +3,15 @@
 public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = cue
     //Variables
     int nSounds, nSteps, nPats, cPat, cSound, pLen, hLen, minPort, moutPort, qL, qR;
-    int muted, cued, focused, onClr, offClr, cursorClr, hiClr; //whats cursor for?
+    int muted, cued, focused, onClr, offClr, cursorClr, hiClr;
     float mPan, mRate, mGain, qGain;
     SndBuf sounds[]; //samples used by this RStep
     Pan2 gBus, mBus, qBus; // generalBus
-    int pats[][]; int firstPad[2]; int stepCCs[]; 
+    int pats[][]; int firstPad[2]; int stepCCs[];
     //Objects
     RhythmClock theClock;
     Push thePush;
-    MidiBroadcaster mB; 
+    MidiBroadcaster mB;
     //Midi
     MidiOut mout;
     MidiMsg msg;
@@ -60,6 +60,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         gBus => mBus;
         gBus => qBus;
         
+        thePush.ccInit();
         int tempStepCCs[nSteps] @=> stepCCs; //Array of CCs
         for(0 => int i; i<hLen; i++){
             for(0 => int j; j<nSteps/hLen; j++){
@@ -69,7 +70,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         normalizeSounds();
         //Sporks
         spork ~ play();
-        spork ~ midiIn(minPort);
+        spork ~ midiIn();
     }
     fun void init(MidiBroadcaster m, MidiOut mo, string s[]){
         init(m,mo,0,7,8,8,64,s);
@@ -108,7 +109,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         else <<<"Trigger out of bounds!">>>;
     }
     
-    fun void midiIn(int nPort){
+    fun void midiIn(){
         MidiMsg msg;
         while(mB.mev=>now){
             mB.mev.msg @=> msg;

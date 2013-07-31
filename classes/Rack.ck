@@ -8,7 +8,7 @@ public class Rack{
     11 => int pOffClr;
     0 => int velOn;
     //Objects
-    PushCCs theCCs;
+    Push push;
     //Midi
     int minPort;
     int moutPort;
@@ -38,7 +38,7 @@ public class Rack{
         int npadCCs[nPads];
         for(0 => int i; i<nPads/hLen; i++){
             for(0 => int j; j<hLen; j++){
-                theCCs.grid[i+firstPad[0]][j+firstPad[1]] => npadCCs[j+(i*hLen)];
+                push.grid[i+firstPad[0]][j+firstPad[1]] => npadCCs[j+(i*hLen)];
             }
         }
         npadCCs @=> padCCs;

@@ -2,7 +2,7 @@
 
 
 public class PushKnob{
-    Push p;
+    Push push;
     MidiBroadcaster mB;
     MidiMsg msg;
     
@@ -12,7 +12,7 @@ public class PushKnob{
     
     int myKnob;        // which knob
     
-    int displayLabel;  // whether to display or not
+    int displayLabel;  // whether to display elements or not
     int displayValue;
     int displayCursor;
     int displayText;
@@ -70,13 +70,7 @@ public class PushKnob{
     
     //=========== FUNCTIONS ============
     
-    
     //======= --| INITIALIZERS |-- =====
-    /*
-    fun void init(){
-        init(-1,p,2,"");
-    }
-    */
     
     fun void init(int iKnob,Push ip,MidiBroadcaster m,string iLabel){
         m @=> mB;
@@ -118,7 +112,7 @@ public class PushKnob{
         0=>shift;
         
         
-        ip@=>p;
+        ip@=>push;
         
         label(iLabel);
         
@@ -483,7 +477,7 @@ public class PushKnob{
             mB.mev.msg @=> msg;
             if(msg.data1==0xB0){
                 if(inFocus){
-                    if(msg.data2==p.knobs[myKnob]){
+                    if(msg.data2==push.knobs[myKnob]){
                         if(msg.data3<64){
                             if(selfInc)msg.data3*inc+=>myPos; // increment
                             msg.data3=>incVal;
@@ -497,20 +491,20 @@ public class PushKnob{
                         if(myPos<0)0=>myPos;
                         displayUpdate();
                         moved.broadcast();
-                    }else if(msg.data2==p.bcol0[0]){
+                    }else if(msg.data2==push.bcol0[0]){
                         if(msg.data3==0x7F)shiftOn.broadcast();   
                         else shiftOff.broadcast();                 
                     }
                 }
             }
             if(msg.data1==0x90){
-                if(msg.data2==p.touch[myKnob]){
+                if(msg.data2==push.touch[myKnob]){
                     if(msg.data3){
                         if(touchMode){
                             if(inFocus){
                                 displayUpdate();
                             }
-                            p.updateDisplay();
+                            push.updateDisplay();
                             1=>touched;
                         }
                         touchOn.broadcast();
@@ -522,7 +516,7 @@ public class PushKnob{
                                 clearValue();
                                 clearLabel();
                             }
-                            p.updateDisplay();
+                            push.updateDisplay();
                             0=>touched;
                         }
                         touchOff.broadcast();
@@ -585,26 +579,26 @@ public class PushKnob{
         }
         if(inFocus){
             if(displayCursor)makeCursor(cursorX,cursorY,cStyle);
-            if(displayValue)p.setSubsegment(valX,valY,dValue);
-            if(displayLabel)p.setSubsegment(labelX,labelY,myLabel);
-            if(displayText)p.setSubsegment(textX,textY,myText);
-            if((selfUpdate)&&(displayCursor|displayValue|displayLabel))p.updateDisplay();
+            if(displayValue)push.subsegment(valX,valY,dValue);
+            if(displayLabel)push.subsegment(labelX,labelY,myLabel);
+            if(displayText)push.subsegment(textX,textY,myText);
+            if((selfUpdate)&&(displayCursor|displayValue|displayLabel))push.updateDisplay();
         }
     }
     
     fun void clearValue(){
-        p.setSubsegment(valX,valY,"");
-        if(selfUpdate)p.updateDisplay();
+        push.subsegment(valX,valY,"");
+        if(selfUpdate)push.updateDisplay();
     }
     
     fun void clearCursor(){
-        p.setSubsegment(cursorX,cursorY,"");
-        if(selfUpdate)p.updateDisplay();
+        push.subsegment(cursorX,cursorY,"");
+        if(selfUpdate)push.updateDisplay();
     }
     
     fun void clearLabel(){
-        p.setSubsegment(labelX,labelY,"");
-        if(selfUpdate)p.updateDisplay();
+        push.subsegment(labelX,labelY,"");
+        if(selfUpdate)push.updateDisplay();
     }
     
     fun void makeCursor(int c,int r,int style){
@@ -633,8 +627,8 @@ public class PushKnob{
                 }
                 cursorThing+"\004"=>cursorThing;
             }
-            p.setSegment(c,r,cursorThing);
-            if(selfUpdate)p.updateDisplay();
+            push.segment(c,r,cursorThing);
+            if(selfUpdate)push.updateDisplay();
         }
         else if(style==1){
             if(iPos==0){
@@ -655,8 +649,8 @@ public class PushKnob{
                 cursorThing+"\010"=>cursorThing;
                 
             }
-            p.setSegment(c,r,cursorThing);
-            if(selfUpdate)p.updateDisplay();
+            push.segment(c,r,cursorThing);
+            if(selfUpdate)push.updateDisplay();
         }else if(style==2){
             if(iPos==0){
                 "\005"=>cursorThing;
@@ -692,8 +686,8 @@ public class PushKnob{
                     }
                 }
             }
-            p.setSubsegment(c,r,cursorThing);
-            if(selfUpdate)p.updateDisplay();
+            push.subsegment(c,r,cursorThing);
+            if(selfUpdate)push.updateDisplay();
         }else if(style==3){
             Math.round(myPos*8)$int=>int iPos;
             ""=>cursorThing;
@@ -713,8 +707,8 @@ public class PushKnob{
             if(myPos==1){
                 cursorThing.substring(0,8)=>cursorThing;
             }
-            p.setSubsegment(c,r,cursorThing);
-            if(selfUpdate)p.updateDisplay();
+            push.subsegment(c,r,cursorThing);
+            if(selfUpdate)push.updateDisplay();
         }
     }
 }

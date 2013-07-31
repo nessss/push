@@ -14,7 +14,7 @@ public class Push{
     int grid[8][8]; //x-y
     int sel[8][2];   
     int knobs[11];
-    int touch[11]; //Note
+    int touch[11];  //0x90
     int bcol0[12];
     int bcol1[10];
     int bcol2[11];
@@ -23,7 +23,15 @@ public class Push{
     int right;
     int up;
     int down;
-    int pbtouch; //Note; Use PB on channel one for value
+    int pbtouch; //0x90; 0xE0 for value
+    
+    
+    8=>int GRID_WIDTH;
+    8=>int GRID_HEIGHT;
+    8=>int SEL_WIDTH;
+    2=>int SEL_HEIGHT;
+    11=>int KNOBS;
+    8=>int DISPLAY_KNOBS;
     
     44=>left;
     45=>right;
@@ -31,66 +39,78 @@ public class Push{
     47=>down;
     12=>pbtouch;
     
-    //grid buttons
-    for(0 => int i; i<8; i++){
-        for(0 => int j; j<8; j++){
-            36 + i + (8*j) => grid[i][j];
-            //i=>grid[Std.itoa(92 + j - (8*i))]["x"];
-            //j=>grid[Std.itoa(92 + j - (8*i))]["y"];
-        }
-    }
-    for(0 => int i; i<8; i++){
-        20 + i  => sel[i][0];
-        102 + i => sel[i][1];
-    }
-    //knobs
-    for(0 => int i; i<8; i++){
-        71 + i => knobs[i];
-    }
-    for(0 => int i; i<11; i++){
-        i => touch[i];
-    }
-    79 => knobs[8];
-    14 => knobs[9];
-    15 => knobs[10];
-    8 => touch[8];
-    10 => touch[9];
-    9 => touch[10];
-    3 => bcol0[0];
-    9 => bcol0[1];
-    for(0=>int i;i<4;i++){
-        119-i=>bcol0[i+2];
-    }
-    for(0=>int i;i<6;i++){
-        90-i=>bcol0[i+6];
-    } 
-    //bcol1
-    28 => bcol1[0];
-    29 => bcol1[1];
-    
-    for(0 => int i; i<8; i++) 43 - i => bcol1[i+2];
-    for(0 => int i; i<3; i++){
-        114 - (i*2) => bcol2[i];
-        115 - (i*2) => bcol3[i];
-    }
-    for(0 => int i; i<8; i++){
-        62 - (i*2) => bcol2[i+3];
-        63 - (i*2) => bcol3[i+3];
-    }
-    
+
     //============= --| INITIALIZER |-- =============
     
     fun void init(){
+        ccInit();
+        /*
+		for(0 => int i; i<GRID_WIDTH; i++){
+			for(0 => int j; j<GRID_HEIGHT; j++){
+        		<<<grid[i][j]>>>;
+        	}
+        }
+        */
         moutInit() @=> mout;
-        
         68=>lineLen;
         for(0=>int i;i<lineLen;i++){
             "\040"+=>emptyLine;
         }
         for(0=>int i;i<lines.cap();i++){
-            setLine(i,emptyLine);
+            line(i,emptyLine);
         }
     }
+    
+	fun void ccInit(){
+		//grid buttons
+		for(0 => int i; i<GRID_WIDTH; i++){
+			for(0 => int j; j<GRID_HEIGHT; j++){
+				36 + i + (8*j) => grid[i][j];
+				//i=>grid[Std.itoa(92 + j - (8*i))]["x"];
+				//j=>grid[Std.itoa(92 + j - (8*i))]["y"];
+			}
+		}
+		for(0 => int i; i<SEL_WIDTH; i++){
+			20 + i  => sel[i][0];
+			102 + i => sel[i][1];
+		}
+		//knobs
+		for(0 => int i; i<DISPLAY_KNOBS; i++){
+			71 + i => knobs[i];
+		}
+		for(0 => int i; i<KNOBS; i++){
+			i => touch[i];
+		}
+		
+		79 => knobs[8];
+		14 => knobs[9];
+		15 => knobs[10];
+		8 => touch[8];
+		10 => touch[9];
+		9 => touch[10];
+		3 => bcol0[0];
+		9 => bcol0[1];
+		
+		for(0=>int i;i<4;i++){
+			119-i=>bcol0[i+2];
+		}
+		for(0=>int i;i<6;i++){
+			90-i=>bcol0[i+6];
+		} 
+		//bcol1
+		28 => bcol1[0];
+		29 => bcol1[1];
+		
+		for(0 => int i; i<8; i++) 43 - i => bcol1[i+2];
+		for(0 => int i; i<3; i++){
+			114 - (i*2) => bcol2[i];
+			115 - (i*2) => bcol3[i];
+		}
+		for(0 => int i; i<8; i++){
+			62 - (i*2) => bcol2[i+3];
+			63 - (i*2) => bcol3[i+3];
+		}
+	}
     
     
     fun MidiOut moutInit(){
@@ -108,8 +128,8 @@ public class Push{
     
     fun int inGrid(int a){
         0=>int result;
-        for(0=>int i;i<8;i++){
-            for(0=> int j;j<8;j++)if(a==grid[i][j])1=>result;
+        for(0=>int i;i<GRID_WIDTH;i++){
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])1=>result;
         }
         return result;
     }
@@ -124,16 +144,16 @@ public class Push{
     
     fun int gridX(int a){
         -1=>int result;
-        for(0=>int i;i<8;i++){
-            for(0=> int j;j<8;j++)if(a==grid[i][j])i=>result;
+        for(0=>int i;i<GRID_WIDTH;i++){
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])i=>result;
         }
         return result;
     }
     
     fun int gridY(int a){
         -1=>int result;
-        for(0=>int i;i<8;i++){
-            for(0=> int j;j<8;j++)if(a==grid[i][j])j=>result;
+        for(0=>int i;i<GRID_WIDTH;i++){
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])j=>result;
         }
         return result;
     }
@@ -141,11 +161,9 @@ public class Push{
     //----------------STRING INTERFACE----------------
     
     // entire display
-    fun string[] getDisplay(){
-        return lines;
-    }
+    fun string[] display(){return lines;}
     
-    fun string[] setDisplay(string nD[]){
+    fun string[] display(string nD[]){
         if(nD.cap()==4){
             for(0=>int i;i<4;i++){
                 if(nD[i].length()!=68){
@@ -166,14 +184,14 @@ public class Push{
     }
     
     // line
-    fun string getLine(int l){
-        if(l>=0&l<4){
+    fun string line(int l){
+        if(l>=0&l<lines.cap()){
             return lines[l];
         }else return "no line "+l;
     }
     
-    fun string setLine(int l,string nL){
-        if(l>=0&l<4){
+    fun string line(int l,string nL){
+        if(l>=0&l<lines.cap()){
             if(nL.length()<=68){
                 while(nL.length()<68)nL+" "=>nL;
                 nL=>lines[l];
@@ -185,7 +203,7 @@ public class Push{
     }
     
     // segment
-    fun string getSegment(int s,int l){
+    fun string segment(int s,int l){
         if((l>=0&l<4)&&(s>=0&s<4)){
             if(s==3){
                 return lines[l].substring(51);
@@ -193,70 +211,72 @@ public class Push{
         }else return "no segment "+s+" on line "+l;
     }
     
-    fun string setSegment(int s,int l,string nS){
+    fun string segment(int s,int l,string nS){
         if((l>=0&l<4)&&(s>=0&s<4)){
             if(nS.length()<=17){
                 while(nS.length()<17)nS+" "=>nS;
                 if(s==3)lines[l].replace(51,nS);
                 else lines[l].replace(s*17,17,nS);
             }else lines[l].replace(s*17,17,nS.substring(0,17));
-            return getSegment(s,l);
+            return segment(s,l);
         }else return "no segment "+s+" on line "+l;
     }
     
     // subsegment
-    fun string getSubsegment(int s,int l){
+    fun string subsegment(int s,int l){
         if((l>=0&l<4)&&(s>=0&s<8)){
             if(s%2==0){
-                return getSegment((s*0.5)$int,l).substring(0,8);
-            }else return getSegment((s*0.5)$int,l).substring(9);
+                return segment((s*0.5)$int,l).substring(0,8);
+            }else return segment((s*0.5)$int,l).substring(9);
         }else return "no subsegment "+s+" on line "+l;
     }
     
-    fun string setSubsegment(int s,int l,string nS){
+    fun string subsegment(int s,int l,string nS){
         if((l>=0&l<4)&&(s>=0&s<8)){
             if(nS.length()<=8){
                 while(nS.length()<8)" "+=>nS;
                 string seg;
                 if(s%2==0){
-                    getSegment((s*0.5)$int,l)=>seg;
+                    segment((s*0.5)$int,l)=>seg;
                     seg.replace(0,8,nS);
                 }else{
-                    getSegment((s*0.5)$int,l)=>seg;
+                    segment((s*0.5)$int,l)=>seg;
                     seg.replace(9,nS);
                 }
-                setSegment((s*0.5)$int,l,seg);
-                return getSubsegment(s,l);
+                segment((s*0.5)$int,l,seg);
+                return subsegment(s,l);
             }else{ // truncate input string
-                return setSubsegment(s,l,nS.substring(0,8));
+                return subsegment(s,l,nS.substring(0,8));
             }
         }else return "no subsegment "+s+" on line "+l;
     }
     
     
     
-    //----------------UPDATE FUNCTIONS----------------
-    
-    fun void clearDisplay(){
-        for(0=>int i;i<lines.cap();i++){
-            clearLine(i);
+	//----------------UPDATE FUNCTIONS----------------
+	
+	fun void clearDisplay(){
+		for(0=>int i;i<lines.cap();i++){
+			clearLine(i);
+		}
+	}
+	
+	fun void clearLine(int l){
+		if(l>=0&l<4){
+			line(l,"");
+			0xF0=>msg.data1;	
+			0x47=>msg.data2;
+			0x7F=>msg.data3;
+			mout.send(msg);
+			0x15=>msg.data1;
+			0x1C+l=>msg.data2;
+			0=>msg.data3;
+			mout.send(msg);
+			0=>msg.data1;
+			0xF7=>msg.data2;
+			0=>msg.data3;
+			mout.send(msg);
         }
-    }
-    
-    fun void clearLine(int l){
-        setLine(l,"");
-        0xF0=>msg.data1;
-        0x47=>msg.data2;
-        0x7F=>msg.data3;
-        mout.send(msg);
-        0x15=>msg.data1;
-        0x1C+l=>msg.data2;
-        0=>msg.data3;
-        mout.send(msg);
-        0=>msg.data1;
-        0xF7=>msg.data2;
-        0=>msg.data3;
-        mout.send(msg);
     }
     
     fun void updateDisplay(){

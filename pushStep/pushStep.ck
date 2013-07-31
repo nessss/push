@@ -9,7 +9,7 @@ int rainbow[8][3]; 05=>rainbow[0][0]; 06=>rainbow[0][1];
 47=>rainbow[6][2]; 49=>rainbow[7][0]; 50=>rainbow[7][1];
 51=>rainbow[7][2];
 //Samples 
-"Push/sounds/" => string sampRoot;
+"sounds/" => string sampRoot;
 ["606kck","606kckA","707kck","707kckA","808kckT1",
 "808kckT2","808kckT3","808kckT4","808kckT5","808kckX1",
 "909kckD1","909kckH1","909kckH2", "909kckH3","EPkck","MBkck1",
