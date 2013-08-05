@@ -81,7 +81,7 @@ fun void init(){
 			knob[i][j][4].valueScale(63);
 			knob[i][j][4].incrementAmt(1.0/63.0);
 			knob[i][j][4].pos(1);
-			knob[i][j][4].displayOnTouch(1);
+			knob[i][j][4].displayOnTouch(0);
 			spork ~ sampleChange(knob[i][j][3], rstep[i]); //knobValue for sample knob
 			spork ~ printValue(knob[i][j][0]);
 			spork ~ printValue(knob[i][j][1]);
