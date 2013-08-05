@@ -102,7 +102,6 @@ fun void init(){
 	knob[6][0][3].text(nHtm[0]); knob[6][0][3].stringList(nHtm);
 	knob[7][0][3].text(nCym[0]); knob[7][0][3].stringList(nCym);
 	
-	<<<"here","">>>;
 	//Aux Knobs
 	PushKnob mGainKnob; //Master Gain
 	mGainKnob.init(8,push,mB,"Mst Gain");
@@ -197,7 +196,6 @@ fun void page(int d, int pg){
     while(pg>=nPages)nPages-=>pg;
     while(pg<0)nPages+=>pg;
     pg=>cPage;
-    //<<<"Page "+myPage>>>;
     for(0=>int i;i<nDrums;i++){
         for(0=>int j; j<nPages; j++){
             for(0 => int l; l<nKnobs; l++){
@@ -231,7 +229,6 @@ fun void printValue(PushKnob pK){
     while(pK.moved=>now){
         pK.displayUpdate();
         push.updateDisplay();
-        //<<<"Knob "+pK.knob()+": "+pK.pos()>>>;
     }
 }
 
@@ -263,7 +260,6 @@ fun void knobValue(PushKnob pK,int a){
 
 fun void knobValueOffTouch(PushKnob pK, int mode){
     while(pK.touchOff=>now){
-        //<<<cDrum>>>;
         if(mode==0 & rstep[cDrum].focus()) rstep[cDrum].patLen(pK.value() $ int);
     }
 }

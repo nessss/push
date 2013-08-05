@@ -209,7 +209,6 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
     fun int patLen(){ return pLen; }
     fun int patLen(int pl){
         if(pl>0) pl => pLen;
-        <<<pLen>>>;
         return pLen;
     }
     
