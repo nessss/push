@@ -1,0 +1,19 @@
+Push TODO
+
+======= -| FIX |- =======
+
+- touch functionality in pushKnob
+
+- led update for mute buttons
+
+======= -| DO  |- =======
+
+- touch a knob, then pitch bend controls that parameter
+
+- sample length knob
+
+- sample reverse
+
+- use note length buttons for pattern length
+
+- finish pitch sequencer
