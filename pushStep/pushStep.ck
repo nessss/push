@@ -262,7 +262,9 @@ fun void knobValue(PushKnob pK,int a){
 
 fun void knobValueOffTouch(PushKnob pK, int mode){
     while(pK.touchOff=>now){
-        if(mode==0 & rstep[cDrum].focus()) rstep[cDrum].patLen(pK.value() $ int);
+        if(mode==0 & pK.focus()){
+        	pK.value(rstep[cDrum].patLen(pK.value() $ int));
+        }
     }
 }
 
