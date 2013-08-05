@@ -44,7 +44,7 @@ fun void init(){
 	new int[nDrums]@=>cSound;
 	for(int i; i<cSound.cap(); i++) 0 => cSound[i];
 	5 => muteColor;
-	moutInit()@=>mout;
+	mout.open("Ableton Push User Port");
 	0.8=> mBus.gain;
 	mBus.left => dac.chan(0);
 	mBus.right => dac.chan(1);
@@ -324,18 +324,6 @@ fun int curDrum(int nd){
         else rstep[i].focus(1);
     }
     return cDrum;
-}
-
-fun MidiOut moutInit(){
-    MidiOut moutCheck[16];
-    for(0 => int i; i<moutCheck.cap(); i++){
-        moutCheck[i].printerr(0);
-        if(moutCheck[i].open(i)){
-            if(moutCheck[i].name()=="Ableton Push User Port"){
-                return moutCheck[i];
-            }       
-        }else return null;
-    }
 }
 
 fun void midiOut(int d1, int d2, int d3){
