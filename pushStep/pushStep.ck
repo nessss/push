@@ -1,13 +1,3 @@
-//PUT RAINBOW IN PUSH CLASS
-int rainbow[8][3]; 05=>rainbow[0][0]; 06=>rainbow[0][1];
-07=>rainbow[0][2]; 09=>rainbow[1][0]; 10=>rainbow[1][1];
-11=>rainbow[1][2]; 13=>rainbow[2][0]; 14=>rainbow[2][1];
-15=>rainbow[2][2]; 21=>rainbow[3][0]; 22=>rainbow[3][1];
-23=>rainbow[3][2]; 29=>rainbow[4][0]; 30=>rainbow[4][1];
-31=>rainbow[4][2]; 41=>rainbow[5][0]; 42=>rainbow[5][1];
-43=>rainbow[5][2]; 45=>rainbow[6][0]; 46=>rainbow[6][1];
-47=>rainbow[6][2]; 49=>rainbow[7][0]; 50=>rainbow[7][1];
-51=>rainbow[7][2];
 //Samples 
 "sounds/" => string sampRoot;
 ["606kck","606kckA","707kck","707kckA","808kckT1",

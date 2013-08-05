@@ -39,6 +39,16 @@ public class Push{
     47=>down;
     12=>pbtouch;
     
+	int myRainbow[8][3]; 05=>myRainbow[0][0]; 06=>myRainbow[0][1];
+	07=>myRainbow[0][2]; 09=>myRainbow[1][0]; 10=>myRainbow[1][1];
+	11=>myRainbow[1][2]; 13=>myRainbow[2][0]; 14=>myRainbow[2][1];
+	15=>myRainbow[2][2]; 21=>myRainbow[3][0]; 22=>myRainbow[3][1];
+	23=>myRainbow[3][2]; 29=>myRainbow[4][0]; 30=>myRainbow[4][1];
+	31=>myRainbow[4][2]; 41=>myRainbow[5][0]; 42=>myRainbow[5][1];
+	43=>myRainbow[5][2]; 45=>myRainbow[6][0]; 46=>myRainbow[6][1];
+	47=>myRainbow[6][2]; 49=>myRainbow[7][0]; 50=>myRainbow[7][1];
+	51=>myRainbow[7][2];
+    
 
     //============= --| INITIALIZER |-- =============
     
@@ -59,6 +69,12 @@ public class Push{
         for(0=>int i;i<lines.cap();i++){
             line(i,emptyLine);
         }
+    }
+    
+    fun int rainbow(int color, int brite){
+    	if((color>7|color<0)|(brite>2|brite<0)){
+    		return 0;
+    	}else return myRainbow[color][brite];
     }
     
 	fun void ccInit(){
