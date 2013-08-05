@@ -27,6 +27,8 @@ int nKnobs;
 PushKnob knob[][][];
 
 init();
+
+<<<"pushStep is ready to go!","">>>;
 //Loop
 while(samp=>now);
 
