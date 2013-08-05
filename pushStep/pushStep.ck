@@ -35,7 +35,7 @@ while(samp=>now);
 //--------------------------Functions--------------------------
 fun void init(){
 	initDirs();
-	mB.init();
+	mB.init("Ableton Push User Port");
 	clock.init();
 	push.init();
 	8 => nDrums;
@@ -48,7 +48,7 @@ fun void init(){
 	0.8=> mBus.gain;
 	mBus.left => dac.chan(0);
 	mBus.right => dac.chan(1);
-	5=>nKnobs;
+	5 => nKnobs;
 	new PushKnob[nDrums][nPages][nKnobs]@=>knob;
 
 	for(0=>int i;i<nDrums;i++){
