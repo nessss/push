@@ -311,9 +311,10 @@ public class PushKnob{
     // text
     fun string text(){return myText;}
     fun string text(string t){
-        while(t.length()<8)" "+=>t;
-        if(t.length()>8)t.substring(0,8)=>t;
-        t=>myText;
+    	t=>string s;
+        while(s.length()<8)" "+=>s;
+        if(s.length()>8)s.substring(0,8)=>s;
+        s=>myText;
     }
     
     fun int displaysText(){return displayText;}
