@@ -95,14 +95,14 @@ fun void init(){
 	
 	
 	//passing sample select knobs the sample names
-	knob[0][0][3].text(nKck[0]); knob[0][0][3].stringList(nKck);
-	knob[1][0][3].text(nSnr[0]); knob[1][0][3].stringList(nSnr);
-	knob[2][0][3].text(nClp[0]); knob[2][0][3].stringList(nClp);
-	knob[3][0][3].text(nChh[0]); knob[3][0][3].stringList(nChh);
-	knob[4][0][3].text(nOhh[0]); knob[4][0][3].stringList(nOhh);
-	knob[5][0][3].text(nLtm[0]); knob[5][0][3].stringList(nLtm);
-	knob[6][0][3].text(nHtm[0]); knob[6][0][3].stringList(nHtm);
-	knob[7][0][3].text(nCym[0]); knob[7][0][3].stringList(nCym);
+	knob[0][0][3].text(kck[0]); knob[0][0][3].stringList(kck);
+	knob[1][0][3].text(snr[0]); knob[1][0][3].stringList(snr);
+	knob[2][0][3].text(clp[0]); knob[2][0][3].stringList(clp);
+	knob[3][0][3].text(chh[0]); knob[3][0][3].stringList(chh);
+	knob[4][0][3].text(ohh[0]); knob[4][0][3].stringList(ohh);
+	knob[5][0][3].text(ltm[0]); knob[5][0][3].stringList(ltm);
+	knob[6][0][3].text(htm[0]); knob[6][0][3].stringList(htm);
+	knob[7][0][3].text(cym[0]); knob[7][0][3].stringList(cym);
 	
 	//Aux Knobs
 	PushKnob mGainKnob; //Master Gain
@@ -378,30 +378,6 @@ fun void initSounds(){
 
 fun void initDirs(){//Samples 
 	"sounds/" => sampRoot;
-	["606kck","606kckA","707kck","707kckA","808kckT1",
-	"808kckT2","808kckT3","808kckT4","808kckT5","808kckX1",
-	"909kckD1","909kckH1","909kckH2", "909kckH3","EPkck","MBkck1",
-	"MBkck2","MBkck3","MBkck4","MBkck5","SBkck1"] @=> nKck;
-	["606snr","606snrA","707snr1","707snr2","808snrT1","808snrT2",
-	"808snrT3","808snrX1","909snrH1","909snrH2","909snrH3","909snrL1",
-	"909snrL2","EPsnr1"] @=> nSnr;
-	["808clpT1","808clpT2","909clp1","909clp2",
-	"909clp3","EPclp1","SBclp1"] @=> nClp;
-	["606chh","606chhA","707chh1","808chhT1",
-	"808chhX1","808chhX2","909chh1","909chh2",
-	"909chh3","909chh4","SBchh1","SBchh2"] @=> nChh;
-	["606ohh","606ohhA","707ohh","808ohhT1","808ohhT2",
-	"909ohh1","909ohh2","909ohh3","IMPohh","SBohh","TRXohh"] @=> nOhh;
-	["606ltm","606htm","606htmA","606ltmA","707ltm",
-	"707mtm","707htm","808mcoX1","909ltm1","909htm1",
-	"707cb","707rim","707tamb","808cbT1","808cla1",
-	"808mar","808rim","909rim","EPshk"] @=> nLtm;
-	["606ltm","606htm","606htmA","606ltmA","707ltm",
-	"707mtm","707htm","808mcoX1","909ltm1","909htm1",
-	"707cb","707rim","707tamb","808cbT1","808cla1",
-	"808mar","808rim","909rim","EPshk"] @=> nHtm;
-	["606cym","606cymA","707csh","707ride","808cym1","808cymT1",
-	"808cymT2","909csh1", "AMENcsh","EPcsh"] @=> nCym;
 	
 	["606kck","606kckA","707kck","707kckA","808kckT1",
 	"808kckT2","808kckT3","808kckT4","808kckT5","808kckX1",
