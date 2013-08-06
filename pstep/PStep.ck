@@ -25,10 +25,13 @@ public class PStep{
         npg => nPages;
         nPages*8 => nSteps => pLen;
         focus(1);
-        0 => muted, cued, pPlay, pEdit, cPage; 
-        0 => pOffClr, nOffClr, tOffClr;
-        3 => pOnClr, nOnClr, tOnClr;
-        10 => pDimClr;
+        0 => muted => cued => pPlay => pEdit => cPage; 
+        0 => pOffClr;
+		0  => nOffClr => tOffClr;
+        21 => pOnClr; 
+		24 => tOnClr;
+		25 => nOnClr;
+        19 => pDimClr;
         0.0 => viewAdj => trans;
         60.0 => root;
         int temp[nSteps][nPages*8];
