@@ -34,13 +34,8 @@ public class PStep{
         19 => pDimClr;
         0.0 => viewAdj => trans;
         60.0 => root;
-        int temp[nSteps][nPages*8];
-        float tempTwo[nSteps][nPages*8];
-        tempTwo @=> pitches;
-        temp @=> tie; //stupid temp array shit?
-        temp @=> noteOn;
-        for(int i; i<nPats; i++){
-            for(int j; j<nSteps; j++){
+        new float[nSteps][nPages*8] @=> pitches;
+        new int[nSteps][nPages*8] @=> tie @=> noteOn;
                 root => pitches[i][j];
             }
         }
