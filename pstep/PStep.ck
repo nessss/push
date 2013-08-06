@@ -85,7 +85,7 @@ public class PStep{
             for(int j; j<8; j++) midiOut(0x90, push.grid[i][j], pOffClr);
         }
         for(int i; i<8; i++){
-            if(pitches[pEdit][i+(cPage*8)] > root+viewAdj){ //if pitch is in page range
+            if(pitches[pEdit][i+(cPage*8)] >= root+viewAdj){ //if pitch is in page range
                 if(pitches[pEdit][i+(cPage*8)] < root+viewAdj+8){
                     if(noteOn[pEdit][i+(cPage*8)]){ //if note is on
                         midiOut(0x90, push.grid[i][(pitches[pEdit][i+(cPage*8)]-root+viewAdj) $ int], pOnClr);
