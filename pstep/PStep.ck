@@ -36,6 +36,8 @@ public class PStep{
         60.0 => root;
         new float[nSteps][nPages*8] @=> pitches;
         new int[nSteps][nPages*8] @=> tie @=> noteOn;
+        for(int i; i<nSteps; i++){
+            for(int j; j<nPages*8; j++){
                 root => pitches[i][j];
             }
         }
