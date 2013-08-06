@@ -137,14 +137,14 @@ public class PStep{
                         if(msg.data2==push.sel[i][0]){
                             if(noteOn[pEdit][i+(cPage*8)]){
                                 0 => noteOn[pEdit][i+(cPage*8)];
-                                midiOut(0x0,push.sel[i][0], nOffClr);
-                                <<<"noteOff: 0">>>;
-                                updateStep(i+cPage*8,pitches[pEdit][i+(cPage*8)]$int);
+                                midiOut(0xB0,push.sel[i][0], nOffClr);
+                                <<<"noteOff: 0","">>>;
+                                updateStep(i+cPage*8,(pitches[pEdit][i+(cPage*8)]-root)$int);
                             }else{
                                 1 => noteOn[pEdit][i+(cPage*8)];
                                 midiOut(0xB0, push.sel[i][0], nOnClr);
-                                <<<"noteOn: 1">>>;
-                                updateStep(i+cPage*8,pitches[pEdit][i+(cPage*8)]$int);
+                                <<<"noteOn: 1","">>>;
+                                updateStep(i+cPage*8,(pitches[pEdit][i+(cPage*8)]-root)$int);
                             }
                         }
                     }
