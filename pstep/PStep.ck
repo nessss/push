@@ -102,6 +102,13 @@ public class PStep{
 		}
 	}
 
+	fun void updateTies(){
+		for(int i;i<8;i++){
+			if(tie[pEdit][i+cPage*8])midiOut(0xB0,push.sel[i][1],tOnClr);
+			else midiOut(0xB0,push.sel[i][1],tOffClr);
+		}
+	}
+ 
     fun void gridButtons(){
         MidiMsg msg;
         while(mB.mev=>now){
