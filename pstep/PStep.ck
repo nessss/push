@@ -164,11 +164,11 @@ public class PStep{
                             if(tie[pEdit][i+(cPage*8)]){
                                 0 => tie[pEdit][i+(cPage*8)];
                                 midiOut(0xB0,push.sel[i][1], tOffClr);
-                                <<<"tie: 0">>>;
+                                <<<"tie: 0",tOffClr>>>;
                             }else{
                                 1 => tie[pEdit][i+(cPage*8)];
                                 midiOut(0xB0, push.sel[i][1], tOnClr);
-                                <<<"tie: 1">>>;
+                                <<<"tie: 1",tOnClr>>>;
                             }
                         }
                     }
