@@ -13,7 +13,7 @@ public class PStep{
     RhythmClock clock;
     Push push;
     MidiBroadcaster mB;
-    int tie[][]; int noteOn[][];  //tie to previous note
+    int tie[][]; int noteOn[][];  //tie to previous note tie[pattern][step]
     float pitches[][];
     
     //Initializer
