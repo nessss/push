@@ -94,7 +94,14 @@ public class PStep{
             }
         }
     }
-    
+   
+	fun void updateNoteOns(){
+		for(int i;i<8;i++){
+			if(noteOn[pEdit][i+cPage*8])midiOut(0xB0,push.sel[i][0],nOnClr);
+			else midiOut(0xB0,push.sel[i][0],nOffClr);
+		}
+	}
+
     fun void gridButtons(){
         MidiMsg msg;
         while(mB.mev=>now){
