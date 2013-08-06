@@ -45,6 +45,15 @@ public class PStep{
         spork ~ gridButtons();
         spork ~ onButtons();
         spork ~ tieButtons();
+		/*
+		for(int i;i<8;i++){
+			updateStep(i,0);
+		}	
+		*/
+		updateGrid();
+		updateNoteOns();
+		updateTies();
+		push.clearDisplay();
     }
     //Functions
     fun void play(){
