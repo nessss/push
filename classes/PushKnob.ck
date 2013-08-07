@@ -86,6 +86,7 @@ public class PushKnob{
                 displaysCursor(1);
                 displaysLabel(1);
                 displaysText(0);
+				cursorStyle(2);
             }else{
                 displayOnTouch(1);
                 setLabelPos(0,0);
