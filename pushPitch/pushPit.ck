@@ -3,6 +3,7 @@ MidiBroadcaster mB;
 RhythmClock clock;
 Push push;
 PStep pstep;
+PushKnob testKnob;
 SubSynth syn;
 DataEvent pitch, trig;
 
@@ -19,7 +20,10 @@ fun void init(){
     clock.init();
     mout.open("Ableton Push User Port");
     push.init();
+	testKnob.init(0,push,mB,"PatLen");
+	testKnob.focus(1);
     pstep.init(mB,mout,push,2,1);
+	spork~knobLoop(testKnob);
     clock.play();
     clock.patLen(8);
     syn.init();
@@ -41,6 +45,15 @@ fun void play(){
     }
 }
 
+fun void knobLoop(PushKnob pK){
+	pK.displayUpdate();
+	push.updateDisplay();
+	while(pK.moved=>now){
+		pK.displayUpdate();
+		push.updateDisplay();
+	}
+}
+	
 fun void pitchLoop(){
     while(pitch => now) syn.pitchIt(pitch.f);
 }
