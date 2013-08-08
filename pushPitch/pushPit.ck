@@ -40,7 +40,7 @@ fun void play(){
             pitch.broadcast();
             if(!pstep.tie[pstep.pPlay][clock.step.i]){
                 trig.broadcast();
-			}else <<<pstep.tie[pstep.pPlay][clock.step.i]>>>;
+			}
         }
     }
 }
