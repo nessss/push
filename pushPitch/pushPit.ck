@@ -18,7 +18,8 @@ init();
 while(samp=>now);
 
 //--------Init-------
-fun void init(){
+fun void init(){init(0);}
+fun void init(int cv){
     mB.init("Ableton Push User Port");
     clock.init();
     mout.open("Ableton Push User Port");
@@ -29,7 +30,16 @@ fun void init(){
 	spork~knobLoop(testKnob);
     clock.play();
     clock.patLen(8);
-    syn.init();
+	if(cv){
+		1=>cvMode;
+		gateOut=>dac.chan(2);
+		pitchOut=>dac.chan(3);
+		adc.chan(0)=>semBus=>dac.chan(0);
+		semBus=>dac.chan(1);
+		cvPitch(45);
+	}else{
+    	syn.init();
+	}
     1.0 => trig.f;
     spork ~ play();
     spork ~ pitchLoop(); spork ~ trigLoop();
