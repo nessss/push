@@ -68,3 +68,18 @@ fun void midiOut(int d1, int d2, int d3){
     d3 => msg.data3;
     mout.send(msg);
 }
+
+fun float cvGateOn(){
+	1.0=>gateOut.next;
+	return 1.0;
+}
+
+fun float cvGateOff(){
+	0.0=>gateOut.next;
+	return 0.0;
+}
+
+fun float cvPitch(float p){
+	CV.mtocv(p)=>pitchOut.next;
+	return CV.mtocv(p);
+}
