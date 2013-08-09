@@ -49,11 +49,25 @@ fun void init(int cv){
 fun void play(){
     while(clock.step => now){
         if(pstep.noteOn[pstep.pPlay][clock.step.i]){
-            pstep.pitches[pstep.pPlay][clock.step.i] => pitch.f;
-            pitch.broadcast();
-            if(!pstep.tie[pstep.pPlay][clock.step.i]){
-                trig.broadcast();
+			if(cvMode){
+				cvPitch(pstep.pitches[pstep.pPlay][clock.step.i]);
+			}else{
+            	pstep.pitches[pstep.pPlay][clock.step.i] => pitch.f;
+            	pitch.broadcast();
 			}
+            if(!pstep.tie[pstep.pPlay][clock.step.i]){
+            	if(cvMode){
+					cvGateOff();
+					10::ms=>now;
+					cvGateOn();
+				}else{
+                	trig.broadcast();
+                }
+			}
+        }else{
+        	if(cvMode){
+        		cvGateOff();
+        	}
         }
     }
 }
@@ -66,7 +80,7 @@ fun void knobLoop(PushKnob pK){
 		push.updateDisplay();
 	}
 }
-	
+
 fun void pitchLoop(){
     while(pitch => now) syn.pitchIt(pitch.f);
 }
