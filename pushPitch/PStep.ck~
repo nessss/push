@@ -161,11 +161,9 @@ public class PStep{
                     for(int i; i<8; i++){
                         if(msg.data2==push.sel[i][1]){
                             if(tie[pEdit][i+(cPage*8)]){
-								<<<"tie off","">>>;
                                 0 => tie[pEdit][i+(cPage*8)];
                                 midiOut(0xB0,push.sel[i][1], tOffClr);
                             }else{
-								<<<"tie on","">>>;
                                 1 => tie[pEdit][i+(cPage*8)];
                                 midiOut(0xB0, push.sel[i][1], tOnClr);
                             }
