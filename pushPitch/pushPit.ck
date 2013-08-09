@@ -8,6 +8,7 @@ SubSynth syn;
 DataEvent pitch, trig;
 Step gateOut;
 Step pitchOut;
+Gain semBus;
 int cvMode;
 
 MidiOut mout;
