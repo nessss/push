@@ -40,7 +40,6 @@ public class PStep{
         for(int i; i<nSteps; i++){
             for(int j; j<nPages*8; j++){
                 root => pitches[i][j];
-				0=>tie[i][j];
             }
         }
         spork ~ play();
