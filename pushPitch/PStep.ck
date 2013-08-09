@@ -246,4 +246,9 @@ public class PStep{
         nc => hiClr;
         return hiClr;
     }
+    fun int viewAdjust(){ return viewAdj; }
+    fun int viewAdjust(int v){
+    	v=>viewAdj;
+    	return viewAdj;
+    }
 }
