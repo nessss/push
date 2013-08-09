@@ -6,6 +6,9 @@ PStep pstep;
 PushKnob testKnob;
 SubSynth syn;
 DataEvent pitch, trig;
+Step gateOut;
+Step pitchOut;
+int cvMode;
 
 MidiOut mout;
 MidiMsg msg;
