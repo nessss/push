@@ -13,7 +13,7 @@ int cvMode;
 MidiOut mout;
 MidiMsg msg;
 
-init();
+init(1);
 
 while(samp=>now);
 
