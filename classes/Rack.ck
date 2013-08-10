@@ -5,6 +5,7 @@ public class Rack{
     int nPads, hLen, pOnClr, pOffClr, velOn, focused; //same as num sounds
     //Objects
     Push push;
+    MidiBroadcaster mB;
     //Midi
     int minPort;
     int moutPort;
@@ -13,12 +14,10 @@ public class Rack{
     <<<mout.name()>>>;
     
     //Functions
-    fun void init(int r, int c, int hl, string s[], int nPort, int oPort){
-        nPort => minPort;
         oPort => moutPort;
-        if(!mout.open(moutPort)) me.exit();
         r => firstPad[0];
         c => firstPad[1];
+        m @=> mB;
         hl => hLen;
         s.cap() => nPads;
         SndBuf newSounds[nPads];
