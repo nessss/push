@@ -25,24 +25,23 @@ public class Rack{
         SndBuf newSounds[nPads];
         9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
         1 => focused;
+        new SndBuf[nPads] @=> sounds;
         for(0 => int i; i<nPads; i++){
-            newSounds[i].read(s[i]);
-            newSounds[i].samples() => newSounds[i].pos;
+            sounds[i].read(s[i]);
+            sounds[i].samples() => sounds[i].pos;
             0.5 => newSounds[i].gain;
         }
-        newSounds @=> sounds;
         
         for(0 => int i; i<sounds.cap(); i++){
             sounds[i] => dac;
         }
-        int npadCCs[nPads];
         
+        new int[nPads] @=> padCCs;
         for(0 => int i; i<nPads/hLen; i++){
             for(0 => int j; j<hLen; j++){
-                push.grid[i+firstPad[0]][j+firstPad[1]] => npadCCs[j+(i*hLen)];
+                push.grid[i+firstPad[0]][j+firstPad[1]] => padCCs[j+(i*hLen)];
             }
         }
-        npadCCs @=> padCCs;
         
         //Sporks
         spork ~ play();
