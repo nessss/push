@@ -17,6 +17,8 @@ public class Rack{
         oPort => moutPort;
         r => firstPad[0];
         c => firstPad[1];
+    //---------------------------Functions---------------------------\\
+    //Initializer
         m @=> mB;
         hl => hLen;
         s.cap() => nPads;
@@ -29,19 +31,52 @@ public class Rack{
             0.5 => newSounds[i].gain;
         }
         newSounds @=> sounds;
+        
         for(0 => int i; i<sounds.cap(); i++){
             sounds[i] => dac;
         }
         int npadCCs[nPads];
+        
         for(0 => int i; i<nPads/hLen; i++){
             for(0 => int j; j<hLen; j++){
                 push.grid[i+firstPad[0]][j+firstPad[1]] => npadCCs[j+(i*hLen)];
             }
         }
         npadCCs @=> padCCs;
+        
+        //Sporks
         spork ~ play();
     }
+    //Triggers
+    fun void trigger(int s){     //full velocity
+        if(s<nPads) 0 => sounds[s].pos;
+        else <<<"Trigger out of bounds!">>>;
+    }
     
+    fun void trigger(int s,float v){ //with velocity
+        v=>sounds[s].gain;
+        if(s<nPads) 0 => sounds[s].pos;
+        else <<<"Trigger out of bounds!">>>;
+    }
+    
+    //Parameters
+    fun int padOnColor(){ return pOnClr; }
+    fun int padOnColor(int nc){ 
+        nc => pOnClr; 
+        return pOnClr;
+    }
+    
+    fun int padOffColor(){ return pOffClr; }
+    fun int padOffColor(int nc){ 
+        nc => pOffClr; 
+        return pOffClr;
+    }
+    
+    fun int numSounds(){ return nPads; }
+    
+    fun int numPads(){ return nPads; }
+    
+    //Loops
     fun void play(){
         MidiIn min;
         MidiMsg msg;
@@ -76,26 +111,14 @@ public class Rack{
         else <<<"Trigger out of bounds!">>>;
     }
     
+    //Utilities     
     fun void midiOut(int d1, int d2, int d3){
         d1 => msg.data1;
         d2 => msg.data2;
         d3 => msg.data3;
         mout.send(msg);
-    }  
     
-    fun void padOnColor(int nc){
-        nc => pOnClr;
-    }
+    } 
     
-    fun void padOffColor(int nc){
-        nc => pOffClr;
-    }
-    
-    fun int numSounds(){
-        return nPads;
-    }
-    
-    fun int numPads(){
-        return nPads;
     }
 }
