@@ -168,7 +168,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
      
     fun int cue(){ return cued; }
     fun int cue(int c){
-        if(c==0){
+        if(!c){
             0 => cued;
             0 => qBus.gain;
         }
@@ -181,14 +181,14 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
     
     fun int mute(){ return muted; }
     fun int mute(int m){
-        if(m==0) 0 => muted;
+        if(!m) 0 => muted;
         else 1 => muted;
         return muted;
     }
     
     fun int focus(){ return focused; }
     fun int focus(int f){
-        if(f==0) 0 => focused;
+        if(!f) 0 => focused;
         else 1 => focused;
         return focused;
     }
