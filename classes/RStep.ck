@@ -234,28 +234,20 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
     
     fun float gain(){ return mGain; } 
     fun float gain(float ng){
-        if(ng>=0 & ng<=1){
-            ng => mGain;
-            return mGain;
-        }
-        else if(ng<0) return gain(0);
-        else return gain(1);
+        sanityCheck(ng) => mGain;
+        return mGain;
     }    
     
-    fun float cueGain(){ return qGain;}
+    fun float cueGain(){ return qBus.gain();}
     fun float cueGain(float ng){
-        if(ng>=0 & ng<=1){
-            ng => qGain;
-            return qGain;
-        }
-        else if(ng<0) return cueGain(0);
-        else return cueGain(1);
+        sanityCheck(ng) => qBus.gain;
+        return qBus.gain();
     }
     
     fun float pan(){ return mPan; }
     fun float pan(float np){
         if(np>=0 & np<=1){
-            (np - 0.5) * 2 => mPan;
+            np*2 - 1 => mPan;
             mPan => mBus.pan, qBus.pan;
             return mPan;
         }
@@ -307,5 +299,11 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         d3 => msg.data3;
         mout.send(msg);
     }   
+    
+     fun float sanityCheck(float f){ //clips to 0.0-1.0
+        if(f<0) return 0.0;
+        else if(f>1) return 1.0;
+        else return f;
+    }
     
 }
