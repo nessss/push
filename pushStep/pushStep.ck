@@ -164,7 +164,7 @@ fun void curDrumLEDs(){
         }
     }
 }
-
+//-------THESE ARE FOR SEL BUTTONS ONLY
 fun void lightOn(int x, int y, int c){
     0xB0 => msg.data1;
     push.sel[x][y] => msg.data2;
