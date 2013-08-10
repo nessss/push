@@ -2,11 +2,7 @@ public class Rack{
     SndBuf sounds[];
     int firstPad[2];
     int padCCs[];
-    1 => int nPads; //same as num sounds
-    int hLen;
-    9 => int pOnClr;
-    11 => int pOffClr;
-    0 => int velOn;
+    int nPads, hLen, pOnClr, pOffClr, velOn, focused; //same as num sounds
     //Objects
     Push push;
     //Midi
@@ -26,6 +22,8 @@ public class Rack{
         hl => hLen;
         s.cap() => nPads;
         SndBuf newSounds[nPads];
+        9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
+        1 => focused;
         for(0 => int i; i<nPads; i++){
             newSounds[i].read(s[i]);
             newSounds[i].samples() => newSounds[i].pos;
