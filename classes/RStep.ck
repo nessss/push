@@ -29,7 +29,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         s.cap() => nSounds;
         nSteps => pLen;
         
-        SndBuf soundsCap[nSounds] @=> sounds;
+        new SndBuf[nSounds] @=> sounds;
         
         0 => muted, cued, cPat, cSound, mPan;
         0.5 => mGain => qGain;
@@ -42,9 +42,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         21 => hiClr; //color displayed when cursor is on a step that's on
         
         //Pats
-        int tempPats[np][nSteps]; 
-        tempPats @=> pats;
-        int pubup[0][0] @=> tempPats;   // destroy array?
+        new int[np][nSteps] @=> pats; 
         
         clearAll();
         
