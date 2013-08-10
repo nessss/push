@@ -65,8 +65,10 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
                 thePush.grid[firstPad[0]+i][firstPad[1]-j] => stepCCs[i+(j*hLen)];
             }
         }
+        
         normalizeSounds();
         //Sporks
+        
         spork ~ play();
         spork ~ midiIn();
     }
@@ -139,7 +141,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
             }
         }
     }
-    //RStep functions--------------------------------------------------
+    //RStep functions--------------------------------------------------      
     fun void connectMaster(UGen l, UGen r){
         mBus.left => l;
         mBus.right => r;
@@ -163,7 +165,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         }
         1.0/max=>s.gain;
     }
-    
+     
     fun int cue(){ return cued; }
     fun int cue(int c){
         if(c==0){
@@ -189,13 +191,6 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         if(f==0) 0 => focused;
         else 1 => focused;
         return focused;
-    }
-    
-    fun void midiOut(int d1, int d2, int d3){
-        d1 => msg.data1;
-        d2 => msg.data2;
-        d3 => msg.data3;
-        mout.send(msg);
     }
     
     fun int curPat(){ return cPat; }
@@ -279,6 +274,7 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         else if(nr<0) return rate(0);
         else return rate(1);
     }
+    
     //Color Functions-------------------------------------------------
     fun int onColor(){ return onClr; }
     fun int onColor(int nc){
@@ -303,4 +299,13 @@ public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = c
         nc => hiClr;
         return hiClr;
     }
+    
+    //Utilities    
+    fun void midiOut(int d1, int d2, int d3){
+        d1 => msg.data1;
+        d2 => msg.data2;
+        d3 => msg.data3;
+        mout.send(msg);
+    }   
+    
 }
