@@ -79,14 +79,20 @@ public class Rack{
     
     fun void trigger(int s){     //full velocity
         if(s<nPads) 0 => sounds[s].pos;
+        if(s>=0 & s<nPads){ 
+            1=>sounds[s].gain;
+            if(!rev) 0 => sounds[s].pos;
+            else sounds[s].samples() => sounds[s].pos;
+        }
         else <<<"Trigger out of bounds!">>>;
     }
     
     fun void trigger(int s,float v){ //with velocity
-        v=>sounds[s].gain;
-        if(s<nPads) 0 => sounds[s].pos;
+        if(s>=0 & s<nPads){ 
+            v=>sounds[s].gain;
             if(!rev) 0 => sounds[s].pos;
             else sounds[s].samples() => sounds[s].pos;
+        }
         else <<<"Trigger out of bounds!">>>;
     }
     
