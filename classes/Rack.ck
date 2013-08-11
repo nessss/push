@@ -12,11 +12,10 @@ public class Rack{
     MidiMsg msg;
     
     //Functions
-        r => firstPad[0];
-        c => firstPad[1];
     //---------------------------Functions---------------------------\\
     //Initializer
         m @=> mB;
+        x => firstPad[0];  y => firstPad[1];
         hl => hLen;
         s.cap() => nPads;
         SndBuf newSounds[nPads];
