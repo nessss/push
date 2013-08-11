@@ -8,13 +8,10 @@ public class Rack{
     MidiBroadcaster mB;
     //Midi
     int minPort;
-    int moutPort;
     MidiOut mout;
     MidiMsg msg;
-    <<<mout.name()>>>;
     
     //Functions
-        oPort => moutPort;
         r => firstPad[0];
         c => firstPad[1];
     //---------------------------Functions---------------------------\\
@@ -25,6 +22,9 @@ public class Rack{
         SndBuf newSounds[nPads];
         9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
         1 => focused;
+        
+        mout.open("Ableton Push User Port");
+        
         new SndBuf[nPads] @=> sounds;
         for(0 => int i; i<nPads; i++){
             sounds[i].read(s[i]);
