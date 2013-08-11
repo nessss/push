@@ -22,6 +22,7 @@ public class Rack{
         s.cap() => nPads;
         9 => pOnClr;  11 => pOffClr; //colors 
         1 => focused;
+        0 => rev => velOn;
         
         mBus.gain(.2);
         
@@ -50,8 +51,32 @@ public class Rack{
         
         //Sporks
         spork ~ play();
+        reverse(1);
     }
     //Triggers
+    fun int reverse(){ return rev; }
+    fun int reverse(int r){
+        if(r){
+            1 => rev;
+            for(int i; i<numSounds(); i++){
+                if(sounds[i].rate() > 0){
+                    sounds[i].rate()*(-1) => sounds[i].rate;
+                    sounds[i].samples() => sounds[i].pos;
+                }
+            }
+        }
+        else{
+            0 => rev;
+            for(int i; i<numSounds(); i++){
+                if(sounds[i].rate() < 0){
+                    sounds[i].rate()*(-1) => sounds[i].rate;
+                    0 => sounds[i].pos;
+                }
+            }
+        }
+        return rev;
+    }
+    
     fun void trigger(int s){     //full velocity
         if(s<nPads) 0 => sounds[s].pos;
         else <<<"Trigger out of bounds!">>>;
@@ -60,6 +85,8 @@ public class Rack{
     fun void trigger(int s,float v){ //with velocity
         v=>sounds[s].gain;
         if(s<nPads) 0 => sounds[s].pos;
+            if(!rev) 0 => sounds[s].pos;
+            else sounds[s].samples() => sounds[s].pos;
         else <<<"Trigger out of bounds!">>>;
     }
     
