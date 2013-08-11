@@ -106,5 +106,7 @@ public class Rack{
         mout.send(msg);
     } 
     
+    fun float midiNorm(float f){ //turns 0-127 into 0.0-1.0
+        return f*(1.0/127.0);
     }
 }
