@@ -31,10 +31,10 @@ public class Rack{
         limiter.limit();
         
         new SndBuf[nPads] @=> sounds;
-        for(0 => int i; i<nPads; i++){
+        for(int i; i<nPads; i++){
             sounds[i].read(s[i]);
             sounds[i].samples() => sounds[i].pos;
-            0.5 => newSounds[i].gain;
+            0.5 => sounds[i].gain;
         }
         
         for(int i; i<sounds.cap(); i++){
@@ -49,6 +49,7 @@ public class Rack{
             }
         }
         
+        //for(int i; i<padCCs.size(); i++) <<<padCCs[i]>>>;
         //Sporks
         spork ~ play();
         reverse(1);
@@ -78,7 +79,6 @@ public class Rack{
     }
     
     fun void trigger(int s){     //full velocity
-        if(s<nPads) 0 => sounds[s].pos;
         if(s>=0 & s<nPads){ 
             1=>sounds[s].gain;
             if(!rev) 0 => sounds[s].pos;
@@ -123,9 +123,11 @@ public class Rack{
                     for(0 => int i; i<nPads; i++){
                         if(msg.data2 == padCCs[i]){
                             if(velOn){
-                                trigger(i, midiNomr(msg.data3));
+                                trigger(i, midiNorm(msg.data3));
                             }
-                            else trigger(i);
+                            else{ 
+                                trigger(i);
+                            }
                             midiOut(0x90, padCCs[i], pOnClr);
                         }
                     }
