@@ -1,5 +1,7 @@
 public class Rack{
     SndBuf sounds[];
+    Pan2 mBus;
+    Dyno limiter;
     int firstPad[2];
     int padCCs[];
     int nPads, hLen, pOnClr, pOffClr, velOn, focused; //same as num sounds
@@ -19,8 +21,11 @@ public class Rack{
         s.cap() => nPads;
         9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
         1 => focused;
+        mBus.gain(.2);
         
         mout.open("Ableton Push User Port");
+        
+        limiter.limit();
         
         new SndBuf[nPads] @=> sounds;
         for(0 => int i; i<nPads; i++){
@@ -29,8 +34,8 @@ public class Rack{
             0.5 => newSounds[i].gain;
         }
         
-        for(0 => int i; i<sounds.cap(); i++){
-            sounds[i] => dac;
+        for(int i; i<sounds.cap(); i++){
+            sounds[i] => mBus => limiter => dac;
         }
         
         new int[nPads] @=> padCCs;
