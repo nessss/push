@@ -7,13 +7,13 @@ public class Rack{
     Push push;
     MidiBroadcaster mB;
     //Midi
-    int minPort;
     MidiOut mout;
     MidiMsg msg;
     
     //Functions
     //---------------------------Functions---------------------------\\
     //Initializer
+    fun void init(MidiBroadcaster m, int x, int y, int hl, string s[]){
         m @=> mB;
         x => firstPad[0];  y => firstPad[1];
         hl => hLen;
@@ -76,11 +76,10 @@ public class Rack{
     
     //Loops
     fun void play(){
-        MidiIn min;
         MidiMsg msg;
-        if(!min.open(minPort)) me.exit();
-        while(min=>now){
-            while(min.recv(msg)){
+        while(mB.mev=>now){
+            mB.mev.msg @=> msg;
+            if(focused){
                 if(msg.data1==0x90){
                     for(0 => int i; i<nPads; i++){
                         if(msg.data2 == padCCs[i]){
