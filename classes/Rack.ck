@@ -84,6 +84,10 @@ public class Rack{
                     for(0 => int i; i<nPads; i++){
                         if(msg.data2 == padCCs[i]){
                             trigger(i);
+                            if(velOn){
+                                trigger(i, midiNomr(msg.data3));
+                            }
+                            else trigger(i);
                             midiOut(0x90, padCCs[i], pOnClr);
                         }
                     }
@@ -95,17 +99,6 @@ public class Rack{
                 }
             }
         }
-    }
-    
-    fun void trigger(int s){
-        if(s<nPads) 0 => sounds[s].pos;
-        else <<<"Trigger out of bounds!">>>;
-    }
-    
-    fun void trigger(int s,float v){
-        v=>sounds[s].gain;
-        if(s<nPads) 0 => sounds[s].pos;
-        else <<<"Trigger out of bounds!">>>;
     }
     
     //Utilities     
