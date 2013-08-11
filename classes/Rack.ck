@@ -10,7 +10,6 @@ public class Rack{
     MidiOut mout;
     MidiMsg msg;
     
-    //Functions
     //---------------------------Functions---------------------------\\
     //Initializer
     fun void init(MidiBroadcaster m, int x, int y, int hl, string s[]){
@@ -18,7 +17,6 @@ public class Rack{
         x => firstPad[0];  y => firstPad[1];
         hl => hLen;
         s.cap() => nPads;
-        SndBuf newSounds[nPads];
         9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
         1 => focused;
         
@@ -83,7 +81,6 @@ public class Rack{
                 if(msg.data1==0x90){
                     for(0 => int i; i<nPads; i++){
                         if(msg.data2 == padCCs[i]){
-                            trigger(i);
                             if(velOn){
                                 trigger(i, midiNomr(msg.data3));
                             }
@@ -107,7 +104,6 @@ public class Rack{
         d2 => msg.data2;
         d3 => msg.data3;
         mout.send(msg);
-    
     } 
     
     }
