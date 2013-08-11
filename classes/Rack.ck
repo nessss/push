@@ -4,7 +4,7 @@ public class Rack{
     Dyno limiter;
     int firstPad[2];
     int padCCs[];
-    int nPads, hLen, pOnClr, pOffClr, velOn, focused; //same as num sounds
+    int nPads, hLen, pOnClr, pOffClr, velOn, focused, rev; //same as num sounds
     //Objects
     Push push;
     MidiBroadcaster mB;
@@ -15,12 +15,14 @@ public class Rack{
     //---------------------------Functions---------------------------\\
     //Initializer
     fun void init(MidiBroadcaster m, int x, int y, int hl, string s[]){
+        push.init();       
         m @=> mB;
         x => firstPad[0];  y => firstPad[1];
         hl => hLen;
         s.cap() => nPads;
-        9 => pOnClr;  11 => pOffClr;  0 => velOn; //colors
+        9 => pOnClr;  11 => pOffClr; //colors 
         1 => focused;
+        
         mBus.gain(.2);
         
         mout.open("Ableton Push User Port");
@@ -39,9 +41,10 @@ public class Rack{
         }
         
         new int[nPads] @=> padCCs;
-        for(0 => int i; i<nPads/hLen; i++){
-            for(0 => int j; j<hLen; j++){
-                push.grid[i+firstPad[0]][j+firstPad[1]] => padCCs[j+(i*hLen)];
+        for(0 => int i; i<hLen; i++){
+            for(0 => int j; j<nPads/hLen; j++){
+                push.grid[firstPad[0]+i][firstPad[1]-j] => padCCs[i+(j*hLen)];
+                <<<push.grid[firstPad[0]+i][firstPad[1]-j]>>>;
             }
         }
         
@@ -96,7 +99,9 @@ public class Rack{
                 }
                 else if(msg.data1==0x80){
                     for(0 => int i; i<nPads; i++){
-                        if(msg.data2 == padCCs[i]) midiOut(0x90, padCCs[i], pOffClr);
+                        if(msg.data2 == padCCs[i]){ 
+                            midiOut(0x90, padCCs[i], pOffClr);
+                        }
                     }
                 }
             }
