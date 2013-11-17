@@ -161,7 +161,7 @@ public class Push{
     fun int gridX(int a){
         -1=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])i=>result;
+            or(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])i=>result;
         }
         return result;
     }
