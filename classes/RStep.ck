@@ -1,5 +1,5 @@
 //A step sequencer for rhythms for Push
-//June, 2012
+//June, 2013
 public class RStep{ //n = number, p = pattern, m = master, h = horizontal, q = cue
     //Variables
     int nSounds, nSteps, nPats, cPat, cSound, pLen, hLen, minPort, moutPort, qL, qR;
