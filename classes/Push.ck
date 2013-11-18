@@ -61,7 +61,7 @@ public class Push{
         	}
         }
         */
-        moutInit() @=> mout;
+        mout.open("Ableton Push User Port");
         68=>lineLen;
         for(0=>int i;i<lineLen;i++){
             "\040"+=>emptyLine;
@@ -129,49 +129,32 @@ public class Push{
 	}
     
     
-    fun MidiOut moutInit(){
-        MidiOut moutCheck[16];
-        for(0 => int i; i<moutCheck.cap(); i++){
-            moutCheck[i].printerr(0);
-            if(moutCheck[i].open(i)){
-                if(moutCheck[i].name()=="Ableton Push Live Port"){
-                    return moutCheck[i];
-                }       
-            }else return null;
-        }
-    }
-    
-    
     fun int inGrid(int a){
-        0=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])1=>result;
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return 1;
         }
-        return result;
+        return 0;
     }
     
     fun int inSel(int a){
-        0=>int result;
         for(0=>int i;i<8;i++){
-            for(0=> int j;j<2;j++)if(a==sel[i][j])1=>result;
+            for(0=> int j;j<2;j++)if(a==sel[i][j])return 1;
         }
-        return result;
+        return 0;
     }
     
     fun int gridX(int a){
-        -1=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            or(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])i=>result;
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return i;
         }
-        return result;
+        return -1;
     }
     
     fun int gridY(int a){
-        -1=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])j=>result;
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return j;
         }
-        return result;
+        return -1;
     }
     
     //----------------STRING INTERFACE----------------
@@ -203,7 +186,8 @@ public class Push{
     fun string line(int l){
         if(l>=0&l<lines.cap()){
             return lines[l];
-        }else return "no line "+l;
+        }
+        return "no line "+l;
     }
     
     fun string line(int l,string nL){
@@ -215,7 +199,8 @@ public class Push{
                 nL.substring(0,68)=>lines[l];
             }
             return lines[l];
-        }else return "no line "+l;
+        }
+        return "no line "+l;
     }
     
     // segment
