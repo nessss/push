@@ -156,7 +156,11 @@ public class Push{
         }
         return -1;
     }
-    
+
+    fun int[] gridPos(int a){
+    	return [gridX(a),gridY(a)];
+    }
+
     //----------------STRING INTERFACE----------------
     
     // entire display
