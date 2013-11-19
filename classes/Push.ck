@@ -10,7 +10,7 @@ public class Push{
     string lines[4];  // 68 characters long, in 4 groups of 17
     int lineLen;
     string emptyLine;
-    //CC you can compare to data2s 
+    //CC you can compare to data2's 
     int grid[8][8]; //x-y
     int sel[8][2];   
     int knobs[11];
@@ -61,7 +61,7 @@ public class Push{
         	}
         }
         */
-        mout.open("Ableton Push User Port");
+        moutInit() @=> mout;
         68=>lineLen;
         for(0=>int i;i<lineLen;i++){
             "\040"+=>emptyLine;
@@ -129,38 +129,51 @@ public class Push{
 	}
     
     
-    fun int inGrid(int a){
-        for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return 1;
+    fun MidiOut moutInit(){
+        MidiOut moutCheck[16];
+        for(0 => int i; i<moutCheck.cap(); i++){
+            moutCheck[i].printerr(0);
+            if(moutCheck[i].open(i)){
+                if(moutCheck[i].name()=="Ableton Push Live Port"){
+                    return moutCheck[i];
+                }       
+            }else return null;
         }
-        return 0;
+    }
+    
+    
+    fun int inGrid(int a){
+        0=>int result;
+        for(0=>int i;i<GRID_WIDTH;i++){
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])1=>result;
+        }
+        return result;
     }
     
     fun int inSel(int a){
+        0=>int result;
         for(0=>int i;i<8;i++){
-            for(0=> int j;j<2;j++)if(a==sel[i][j])return 1;
+            for(0=> int j;j<2;j++)if(a==sel[i][j])1=>result;
         }
-        return 0;
+        return result;
     }
     
     fun int gridX(int a){
+        -1=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return i;
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])i=>result;
         }
-        return -1;
+        return result;
     }
     
     fun int gridY(int a){
+        -1=>int result;
         for(0=>int i;i<GRID_WIDTH;i++){
-            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])return j;
+            for(0=> int j;j<GRID_HEIGHT;j++)if(a==grid[i][j])j=>result;
         }
-        return -1;
+        return result;
     }
-
-    fun int[] gridPos(int a){
-    	return [gridX(a),gridY(a)];
-    }
-
+    
     //----------------STRING INTERFACE----------------
     
     // entire display
@@ -190,8 +203,7 @@ public class Push{
     fun string line(int l){
         if(l>=0&l<lines.cap()){
             return lines[l];
-        }
-        return "no line "+l;
+        }else return "no line "+l;
     }
     
     fun string line(int l,string nL){
@@ -203,8 +215,7 @@ public class Push{
                 nL.substring(0,68)=>lines[l];
             }
             return lines[l];
-        }
-        return "no line "+l;
+        }else return "no line "+l;
     }
     
     // segment
@@ -304,12 +315,94 @@ public class Push{
             0=>msg.data2;
             lines[l].charAt(0)=>msg.data3;
             mout.send(msg);
-            for(1=>int i;i<67;3+=>i){
-            	lines[l].charAt(i)=>msg.data1;
-            	lines[l].charAt(i+1)=>msg.data2;
-            	lines[l].charAt(i+2)=>msg.data3;
-            	mout.send(msg);
-            }
+            lines[l].charAt(1)=>msg.data1;
+            lines[l].charAt(2)=>msg.data2;
+            lines[l].charAt(3)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(4)=>msg.data1;
+            lines[l].charAt(5)=>msg.data2;
+            lines[l].charAt(6)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(7)=>msg.data1;
+            lines[l].charAt(8)=>msg.data2;
+            lines[l].charAt(9)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(10)=>msg.data1;
+            lines[l].charAt(11)=>msg.data2;
+            lines[l].charAt(12)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(13)=>msg.data1;
+            lines[l].charAt(14)=>msg.data2;
+            lines[l].charAt(15)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(16)=>msg.data1;
+            lines[l].charAt(17)=>msg.data2;
+            lines[l].charAt(18)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(19)=>msg.data1;
+            lines[l].charAt(20)=>msg.data2;
+            lines[l].charAt(21)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(22)=>msg.data1;
+            lines[l].charAt(23)=>msg.data2;
+            lines[l].charAt(24)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(25)=>msg.data1;
+            lines[l].charAt(26)=>msg.data2;
+            lines[l].charAt(27)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(28)=>msg.data1;
+            lines[l].charAt(29)=>msg.data2;
+            lines[l].charAt(30)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(31)=>msg.data1;
+            lines[l].charAt(32)=>msg.data2;
+            lines[l].charAt(33)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(34)=>msg.data1;
+            lines[l].charAt(35)=>msg.data2;
+            lines[l].charAt(36)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(37)=>msg.data1;
+            lines[l].charAt(38)=>msg.data2;
+            lines[l].charAt(39)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(40)=>msg.data1;
+            lines[l].charAt(41)=>msg.data2;
+            lines[l].charAt(42)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(43)=>msg.data1;
+            lines[l].charAt(44)=>msg.data2;
+            lines[l].charAt(45)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(46)=>msg.data1;
+            lines[l].charAt(47)=>msg.data2;
+            lines[l].charAt(48)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(49)=>msg.data1;
+            lines[l].charAt(50)=>msg.data2;
+            lines[l].charAt(51)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(52)=>msg.data1;
+            lines[l].charAt(53)=>msg.data2;
+            lines[l].charAt(54)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(55)=>msg.data1;
+            lines[l].charAt(56)=>msg.data2;
+            lines[l].charAt(57)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(58)=>msg.data1;
+            lines[l].charAt(59)=>msg.data2;
+            lines[l].charAt(60)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(61)=>msg.data1;
+            lines[l].charAt(62)=>msg.data2;
+            lines[l].charAt(63)=>msg.data3;
+            mout.send(msg);
+            lines[l].charAt(64)=>msg.data1;
+            lines[l].charAt(65)=>msg.data2;
+            lines[l].charAt(66)=>msg.data3;
+            mout.send(msg);
             lines[l].charAt(67)=>msg.data1;
             0xF7=>msg.data2;
             0=>msg.data3;
