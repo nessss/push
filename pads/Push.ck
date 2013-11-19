@@ -54,13 +54,15 @@ public class Push{
     
     fun void init(){
         ccInit();
-        /*
 		for(0 => int i; i<GRID_WIDTH; i++){
 			for(0 => int j; j<GRID_HEIGHT; j++){
         		<<<grid[i][j]>>>;
         	}
         }
+<<<<<<< HEAD:classes/Push.ck
         */
+=======
+>>>>>>> 24fbd304cc150e64c31d6daf8293f39eecf5dbd8:pads/Push.ck
         moutInit() @=> mout;
         68=>lineLen;
         for(0=>int i;i<lineLen;i++){
