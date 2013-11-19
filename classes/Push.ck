@@ -10,7 +10,7 @@ public class Push{
     string lines[4];  // 68 characters long, in 4 groups of 17
     int lineLen;
     string emptyLine;
-    //CC you can compare to data2's 
+    //CC you can compare to data2s 
     int grid[8][8]; //x-y
     int sel[8][2];   
     int knobs[11];
