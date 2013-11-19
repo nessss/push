@@ -8,6 +8,9 @@ mout.open("Ableton Push User Port");
 for(int i;i<64;i++)
 	send(0x90,36+i,0);
 
+for(int i;i<8;i++)
+	send(0x90,push.sel[i][1],push.rainbow(i,1));
+
 PadGroup spell;
 spell.grpBus => Pan2 master => dac;  
 spell.init(push.rainbow(3,1),push.rainbow(5,1)); //init pad group
@@ -96,6 +99,10 @@ sharp.addPad("Sharp/Shoo.wav", push.grid[2][3]);
 sharp.addPad("Sharp/tah.wav", push.grid[2][2]);
 sharp.addPad("Sharp/Shoo2.wav", push.grid[3][3]);
 sharp.addPad("Sharp/'y.wav", push.grid[3][2]);
+sharp.addPad("gunshot.wav", push.grid[4][3]);
+
+1=>sharp.sustain[8];
+sharp.pads[8].sampler.buf[0].startPhase(0.01);
 
 MidiIn min; 
 min.open("Ableton Push User Port");
