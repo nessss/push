@@ -2,6 +2,25 @@ Push push;
 push.init();
 push.clearDisplay();
 
+MidiLooper mL[4];
+for(int i;i<mL.cap();i++){
+	mL.init();
+}
+
+int funBtn[0];
+funBtn<<push.grid[4][4];
+funBtn<<push.grid[5][4];
+funBtn<<push.grid[5][3];
+funBtn<<push.grid[6][4];
+funBtn<<push.grid[7][4];
+funBtn<<push.grid[7][3];
+funBtn<<push.grid[4][2];
+funBtn<<push.grid[5][2];
+funBtn<<push.grid[5][0];
+funBtn<<push.grid[6][0];
+funBtn<<push.grid[6][2];
+funBtn<<push.grid[7][0];
+
 MidiOut mout;
 mout.open("Ableton Push User Port");
 
@@ -121,10 +140,36 @@ fun void midiIn(){
             if(msg.data1 == 144 | msg.data1 == 128){
                 //<<<msg.data3>>>;
                 if(msg.data2>35 & msg.data2<100){
-                    spell.checkNote(msg);
-                    acBass.checkNote(msg);
-                    checkIt.checkNote(msg);
-                    sharp.checkNote(msg);
+                	1=>int isNote;
+                	for(int i;i<funBtn.cap();i++)
+                		if(msg.data2==funBtn[i])0=>isNote;
+                	if(isNote){
+                    	spell.checkNote(msg);
+                    	acBass.checkNote(msg);
+                    	checkIt.checkNote(msg);
+                    	sharp.checkNote(msg);
+                    	for(int i;i<mL.cap();i++){
+                    		mL[i].addmsg(msg);
+                    	}
+                    }else{
+                    	for(int i;i<funBtn.cap();i++){
+                    		if(i%4==0){
+                    			if(mL[i/4].recording){
+                    				mL[i/4].stop();
+                    				blinkShred[i/4].exit();
+                    			}else{
+                    				mL[i/4].record();
+                    				spork~recordingBlink(funBtn[i])@=>blinkShred[i/4];
+                    			}
+                    		}else if(i%4==1){
+                    			mL[i/4].clear();
+                    			blinkShred[i/4].exit();
+                    		}else if(i%4==2){
+                    			if(!mL[i/4].recording)
+                    				mL[i/4].mute(!mL[i/4].mute);
+                    		}
+                    	}
+                    }
                 }
             }
         }
@@ -137,4 +182,12 @@ fun void send(int d1,int d2,int d3){
 	d2=>msg.data2;
 	d3=>msg.data3;
 	mout.send(msg);
+}
+
+fun void recordingBlink(int p){
+	while(blinkDur=>now){
+		send(0x90,p,push.rainbow(0,0));
+		blinkDur=>now;
+		send(0x90,p,0);
+	}
 }
