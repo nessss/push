@@ -2,15 +2,15 @@ Push push;
 PadGroup amen;
 amen.grpBus => dac;  
 amen.init(push.rainbow(1,1),push.rainbow(0,1)); //init pad group
-amen.addPad("amen/snare.aif", 36); 
-amen.addPad("amen/kick.aif", 37); 
-amen.addPad("amen/snare.aif", 38); 
-amen.addPad("amen/kick.aif", 39); 
-amen.addPad("amen/snarelet.aif", 44); 
-amen.addPad("amen/kicklet2.aif", 45); 
-amen.addPad("amen/kicklet1.aif", 46); 
-amen.addPad("amen/ride.aif", 47); 
-amen.addPad("amen/snare.aif", 48); 
+amen.addPad("Spell/theS", 36); 
+amen.addPad("Spell/S", 37); 
+amen.addPad("Spell/theU", 38); 
+amen.addPad("Spell/U", 39); 
+amen.addPad("Spell/theP", 44); 
+amen.addPad("Spell/theP", 45); 
+amen.addPad("Spell/theP", 46); 
+amen.addPad("Spell/theP", 47); 
+amen.addPad("Spell/theP", 48); 
 
 
 
