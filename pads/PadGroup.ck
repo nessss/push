@@ -20,11 +20,11 @@ public class PadGroup{
     fun void checkNote(MidiMsg msg){
         for(int i; i<pads.size(); i++){
             if(pads[i].noteNum == msg.data2){ 
-                if(msg.data1 == 144){
+                if(msg.data1==0x90){
                     pads[i].sampler.trigger(0);
                     mou.midiOut(144, msg.data2, onClr);
                 }
-                else{ 
+                else if(msg.data1==0x80){ 
                     mou.midiOut(144, msg.data2, offClr);
                 }
             }
