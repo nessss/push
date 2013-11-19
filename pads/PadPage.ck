@@ -6,7 +6,6 @@ MidiLooper mL;
 mL.init();
 PadGroup amen;
 amen.grpBus => dac;  
-<<<<<<< HEAD
 amen.init(push.rainbow(0,1),push.rainbow(1,1)); //init pad group
 
 amen.addPad("amen/snare.aif", push.grid[0][0]); 
@@ -19,19 +18,6 @@ amen.addPad("amen/kicklet2.aif", push.grid[1][1]);
 amen.addPad("amen/kicklet1.aif", push.grid[2][1]); 
 amen.addPad("amen/ride.aif", push.grid[3][1]); 
 amen.addPad("amen/crash.aif", push.grid[3][2]);
-=======
-amen.init(push.rainbow(1,1),push.rainbow(0,1)); //init pad group
-amen.addPad("Spell/theS", 36); 
-amen.addPad("Spell/S", 37); 
-amen.addPad("Spell/theU", 38); 
-amen.addPad("Spell/U", 39); 
-amen.addPad("Spell/theP", 44); 
-amen.addPad("Spell/theP", 45); 
-amen.addPad("Spell/theP", 46); 
-amen.addPad("Spell/theP", 47); 
-amen.addPad("Spell/theP", 48); 
->>>>>>> a11260a11bd2d8eb6170b7e417e2b904df4c09c9
-
 
 
 MidiIn min; 
@@ -66,7 +52,6 @@ fun void midiIn(){
         }
     }
 }
-<<<<<<< HEAD
 
 fun void loopLoop(){
     while(mL.msgReady=>now){
@@ -76,5 +61,3 @@ fun void loopLoop(){
         }
     }
 }
-=======
->>>>>>> a11260a11bd2d8eb6170b7e417e2b904df4c09c9
