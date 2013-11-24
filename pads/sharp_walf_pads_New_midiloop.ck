@@ -53,9 +53,8 @@ while(samp=>now);
 
 
 fun void midiIn(){
-    MidiMsg msg;
     while(mB.mev => now){
-        mB.mev.msg @=> msg;
+        copyMsg(mB.mev.msg) @=> MidiMsg msg;
         if(msg.data1 == 144 | msg.data1 == 128){ 
             //<<<msg.data3>>>;
             if(msg.data2>35 & msg.data2<100){
@@ -67,6 +66,15 @@ fun void midiIn(){
         }
     }
 }
+
+fun MidiMsg copyMsg(MidiMsg inMsg){
+    MidiMsg outMsg;
+    inMsg.data1=>outMsg.data1;
+    inMsg.data2=>outMsg.data2;
+    inMsg.data3=>outMsg.data3;
+    return outMsg;
+}
+    
 
 fun void send(int d1,int d2,int d3){
     MidiMsg msg;
