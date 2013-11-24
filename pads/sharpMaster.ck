@@ -3,6 +3,8 @@ Machine.add(me.dir(-2)+"/push/classes/Push.ck");
 Machine.add(me.dir(-2)+"/chuckStuff/classes/Sampler/SndBufPlus.ck");
 Machine.add(me.dir(-2)+"/chuckStuff/classes/Sampler/SndBufN.ck");
 Machine.add(me.dir(-2)+"/chuckStuff/classes/Sampler/Sampler.ck");
+Machine.add(me.dir(-2)+"/chuckStuff/classes/MidiEvent.ck");
+Machine.add(me.dir(-2)+"/chuckStuff/classes/MidiBroadcaster.ck");
 Machine.add(me.dir(-2)+"/chuckStuff/classes/MidiLoop.ck");
 Machine.add(me.dir(-2)+"/chuckStuff/classes/Clock.ck");
 
