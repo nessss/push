@@ -27,7 +27,10 @@ public class PadGroup{
                 if(msg.data1==0x90){
                 	if(choke){
                 		for(int j;j<pads.cap();j++){
-                			if(i!=j&pads[j].sampler.isPlaying(0))pads[j].sampler.stop(0);
+                			if(i!=j&pads[j].sampler.isPlaying(0)){
+                				pads[j].sampler.stop(0);
+                				chout<="Stop "<=j<=IO.nl();
+							}
                 		}
                 		100::samp=>now;
                 	}
