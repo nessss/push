@@ -36,6 +36,17 @@ amen.grpBus => Pan2 master => dac;
 amen.init(push.rainbow(0,1),push.rainbow(1,1)); //init pad group
 initAmen();
 
+PadGroup cold;
+cold.grpBus => master => dac;
+cold.init(push.rainbow(0,1),push.rainbow(2,1));
+initCold();
+
+PadGroup sweet;
+sweet.grpBus => master => dac;
+sweet.init(push.rainbow(0,1),push.rainbow(3,1));
+initSweet();
+
+
 MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
@@ -58,6 +69,8 @@ fun void midiIn(){
         if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
             if(msg.data2>35 & msg.data2<100){
                 amen.checkNote(msg);
+                cold.checkNote(msg);
+                sweet.checkNote(msg);
                 for(int i;i<mL.cap();i++){
                     mL[i].addMsg(msg);
                 }
@@ -118,4 +131,27 @@ fun void initAmen(){
     amen.addPad("amen/kicklet1.aif", push.grid[2][1]); 
     amen.addPad("amen/ride.aif", push.grid[3][1]); 
     amen.addPad("amen/crash.aif", push.grid[3][2]);
+}
+
+fun void initCold(){
+    cold.addPad("cold_sweat/snare.aif", push.grid[4][0]);
+    cold.addPad("cold_sweat/kick.aif", push.grid[5][0]);
+    cold.addPad("cold_sweat/snare.aif", push.grid[6][0]);
+    cold.addPad("cold_sweat/kick.aif", push.grid[7][0]);
+    cold.addPad("cold_sweat/snarelet.aif", push.grid[4][1]);
+    cold.addPad("cold_sweat/rush2.aif", push.grid[5][1]);
+    cold.addPad("cold_sweat/rush1.aif", push.grid[6][1]);
+    cold.addPad("cold_sweat/ride.aif", push.grid[7][1]);
+}
+
+fun void initSweet(){
+    sweet.addPad("sweet_pea/snare.aif", push.grid[4][2]);
+    sweet.addPad("sweet_pea/kick.aif", push.grid[5][2]);
+    sweet.addPad("sweet_pea/snare.aif", push.grid[6][2]);
+    sweet.addPad("sweet_pea/kick.aif", push.grid[7][2]);
+    sweet.addPad("sweet_pea/snarelet.aif", push.grid[4][3]);
+    sweet.addPad("sweet_pea/rush2.aif", push.grid[5][3]);
+    sweet.addPad("sweet_pea/rush1.aif", push.grid[6][3]);
+    
+    sweet.addPad("sweet_pea/rush1.aif", push.grid[7][3]);
 }
