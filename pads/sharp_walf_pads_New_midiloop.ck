@@ -78,9 +78,9 @@ fun void send(int d1,int d2,int d3){
 
 
 fun void loopLoop(int l){
-    while(mL[l].msgReady=>now){
+    while(mL[l].curMsg=>now){
         if(!mL[l].recording){
-            amen.checkNote(mL[l].curMsg);
+            amen.checkNote(mL[l].curMsg.msg);
         }
     }
 }
