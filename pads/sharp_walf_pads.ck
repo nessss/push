@@ -38,13 +38,18 @@ initAmen();
 
 PadGroup cold;
 cold.grpBus => master => dac;
-cold.init(push.rainbow(0,1),push.rainbow(2,1));
+cold.init(push.rainbow(0,1),push.rainbow(4,1));
 initCold();
 
 PadGroup sweet;
 sweet.grpBus => master => dac;
-sweet.init(push.rainbow(0,1),push.rainbow(3,1));
+sweet.init(push.rainbow(0,1),push.rainbow(6,1));
 initSweet();
+
+PadGroup worm;
+worm.grpBus => master => dac;
+worm.init(push.rainbow(0,1),push.rainbow(3,1));
+initWorm();
 
 
 MidiBroadcaster mB;
@@ -71,6 +76,7 @@ fun void midiIn(){
                 amen.checkNote(msg);
                 cold.checkNote(msg);
                 sweet.checkNote(msg);
+                worm.checkNote(msg);
                 for(int i;i<mL.cap();i++){
                     mL[i].addMsg(msg);
                 }
@@ -141,6 +147,8 @@ fun void initCold(){
     cold.addPad("cold_sweat/snarelet.aif", push.grid[4][1]);
     cold.addPad("cold_sweat/rush2.aif", push.grid[5][1]);
     cold.addPad("cold_sweat/rush1.aif", push.grid[6][1]);
+    //1 => cold.sustain[5];
+    //1 => cold.sustain[6];
     cold.addPad("cold_sweat/ride.aif", push.grid[7][1]);
 }
 
@@ -152,6 +160,29 @@ fun void initSweet(){
     sweet.addPad("sweet_pea/snarelet.aif", push.grid[4][3]);
     sweet.addPad("sweet_pea/rush2.aif", push.grid[5][3]);
     sweet.addPad("sweet_pea/rush1.aif", push.grid[6][3]);
+    //1 => sweet.sustain[5];
+    //1 => sweet.sustain[6];
+    sweet.addPad("sweet_pea/kicklet.aif", push.grid[7][3]);
+}
+
+fun void initWorm(){
+    worm.addPad("worm", push.grid[4][4]);
+    worm.addPad("worm", push.grid[5][4]);
+    worm.addPad("worm", push.grid[6][4]);
+    worm.addPad("worm", push.grid[7][4]);
+    for(0=>int i; i<4; i++) worm.pads[i].sampler.pitch(0,60+i);
+
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[4][5]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[5][5]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[6][5]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[7][5]);
+    for(4 =>int i; i<8; i++) worm.pads[i].sampler.pitch(0,60+i);
+
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[4][6]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[5][6]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[6][6]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[7][6]);
+    for(8 =>int i; i<12; i++) worm.pads[i].sampler.pitch(0,60+i);
     
-    sweet.addPad("sweet_pea/rush1.aif", push.grid[7][3]);
+    for(int i; i<worm.pads.cap(); i++) 1 => worm.sustain[i];
 }
