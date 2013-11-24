@@ -14,4 +14,4 @@ Machine.add(me.dir()+"/MidiOutUtil.ck");
 
 Machine.add(me.dir()+"/Pad.ck");
 Machine.add(me.dir()+"/PadGroup.ck");
-Machine.add(me.dir()+"/sharp_walf_pads_New_midiloop.ck");
+Machine.add(me.dir()+"/sharp_walf_pads.ck");
