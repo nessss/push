@@ -2,6 +2,9 @@ Push push;
 push.init();
 push.clearDisplay();
 
+MidiBroadcaster mB;
+mB.init("Ableton Push User Port");
+
 Clock clock;
 clock.init(170);
 
@@ -13,7 +16,7 @@ orec.listen();
 Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
 50=>rez.Q;
-20=>metro.gain;
+1=>metro.gain;
 
 MidiLooper mL[4];
 for(int i;i<mL.cap();i++){
@@ -21,28 +24,17 @@ for(int i;i<mL.cap();i++){
 	32=>mL[i].clockDiv;
 }
 
-int funBtn[0];
-funBtn<<push.grid[4][4];//r0
-funBtn<<push.grid[5][4];//c0
-funBtn<<push.grid[5][3];//m0
-
-funBtn<<push.grid[6][4];//r1
-funBtn<<push.grid[7][4];//c1
-funBtn<<push.grid[7][3];//m1
-
-funBtn<<push.grid[4][2];//r2
-funBtn<<push.grid[5][2];//c2
-funBtn<<push.grid[6][2];//m2
-
-funBtn<<push.grid[5][0];//r4
-funBtn<<push.grid[6][0];//c4
-funBtn<<push.grid[7][0];//m4
 
 Shred blinkShred[4];
 200::ms=>dur blinkDur;
 
 MidiOut mout;
 mout.open("Ableton Push User Port");
+
+mL[0].initControlButtons(mB,mout,push.grid[4][4],push.grid[5][4],push.grid[5][3]);
+mL[1].initControlButtons(mB,mout,push.grid[6][4],push.grid[7][4],push.grid[7][3]);
+mL[2].initControlButtons(mB,mout,push.grid[4][2],push.grid[5][2],push.grid[6][2]);
+mL[3].initControlButtons(mB,mout,push.grid[5][0],push.grid[6][0],push.grid[7][0]);
 
 for(int i;i<64;i++)
 	send(0x90,36+i,0);
@@ -86,7 +78,7 @@ MidiIn min;
 min.open("Ableton Push User Port");
 
 spork ~ midiIn();
-for(int i;i<4;i++){
+for(int i;i<mL.cap();i++){
 	spork~loopLoop(i);
 }
 spork~displayClock();
@@ -95,8 +87,25 @@ chout<="Ready!"<=IO.nl();
 
 while(samp=>now);
 
-
 fun void midiIn(){
+    while(mB.mev => now){
+        copyMsg(mB.mev.msg) @=> MidiMsg msg;
+        if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
+            if(msg.data2>35 & msg.data2<100){
+                spell.checkNote(msg);
+                acBass.checkNote(msg);
+                sharp.checkNote(msg);
+                checkIt.checkNote(msg);
+                for(int i;i<mL.cap();i++){
+                    mL[i].addMsg(msg);
+                }
+            }
+        }
+    }
+}
+
+fun void oldMidiIn(){
+	int funBtn[0];
     while(min => now){
         while(min.recv(MidiMsg msg)){
             if(msg.data1 == 144 | msg.data1 == 128){
@@ -124,7 +133,7 @@ fun void midiIn(){
                     					send(0x80,funBtn[i],0);
                     				}else{
                     					mL[i/3].record();
-                    					spork~recordingBlink(funBtn[i])@=>blinkShred[i/3];
+                    					//spork~recordingBlink(funBtn[i])@=>blinkShred[i/3];
                     				}
                     			}else if(i%3==1){
                     				chout<="Clearing "<=i/3<=IO.nl();
@@ -148,6 +157,14 @@ fun void midiIn(){
     }
 }
 
+fun MidiMsg copyMsg(MidiMsg inMsg){
+    MidiMsg outMsg;
+    inMsg.data1=>outMsg.data1;
+    inMsg.data2=>outMsg.data2;
+    inMsg.data3=>outMsg.data3;
+    return outMsg;
+}
+
 fun void send(int d1,int d2,int d3){
 	MidiMsg msg;
 	d1=>msg.data1;
@@ -156,21 +173,14 @@ fun void send(int d1,int d2,int d3){
 	mout.send(msg);
 }
 
-fun void recordingBlink(int p){
-	while(blinkDur=>now){
-		send(0x90,p,push.rainbow(0,0));
-		blinkDur=>now;
-		send(0x90,p,0);
-	}
-}
-
 fun void loopLoop(int l){
-    while(mL[l].msgReady=>now){
+    while(mL[l].curMsg=>now){
+    	mL[l].curMsg.msg @=> MidiMsg msg;
         if(!mL[l].recording){
-        	spell.checkNote(mL[l].curMsg);
-        	acBass.checkNote(mL[l].curMsg);
-        	sharp.checkNote(mL[l].curMsg);
-            checkIt.checkNote(mL[l].curMsg);
+        	spell.checkNote(msg);
+        	acBass.checkNote(msg);
+        	sharp.checkNote(msg);
+            checkIt.checkNote(msg);
         }
     }
 }
