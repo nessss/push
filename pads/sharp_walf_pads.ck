@@ -10,10 +10,12 @@ orec.port(98765);
 orec.event("/c,f")@=>OscEvent clockMsg;
 orec.listen();
 
-Impulse metro=>ResonZ rez;//=>dac;
+//Metro
+Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
 50=>rez.Q;
 20=>metro.gain;
+
 MidiLooper mL[1];
 for(int i;i<mL.cap();i++){
 	mL[i].init();
@@ -32,16 +34,15 @@ Shred blinkShred[4];
 MidiOut mout;
 mout.open("Ableton Push User Port");
 
-for(int i;i<64;i++)
+for(int i;i<64;i++)    //clears pads
 	send(0x90,36+i,0);
 
-for(int i;i<8;i++)
+for(int i;i<8;i++)       //sets default off colors?
 	send(0x90,push.sel[i][1],push.rainbow(i,1));
 
 PadGroup amen;
 amen.grpBus => Pan2 master => dac;  
 amen.init(push.rainbow(0,1),push.rainbow(1,1)); //init pad group
-//1=>amen.choke;
 initAmen();
 
 MidiIn min; 
@@ -61,7 +62,7 @@ while(samp=>now);
 fun void midiIn(){
     while(min => now){
         while(min.recv(MidiMsg msg)){
-            if(msg.data1 == 144 | msg.data1 == 128){
+            if(msg.data1 == 144 | msg.data1 == 128){ 
                 //<<<msg.data3>>>;
                 if(msg.data2>35 & msg.data2<100){
                 	1=>int isNote;
