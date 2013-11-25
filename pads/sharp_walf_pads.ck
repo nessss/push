@@ -14,9 +14,9 @@ orec.listen();
 Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
 50=>rez.Q;
-20=>metro.gain;
+10=>metro.gain;
 
-MidiLooper mL[1];
+MidiLooper mL[2];
 for(int i;i<mL.cap();i++){
     mL[i].init();
     32=>mL[i].clockDiv;
@@ -56,11 +56,10 @@ MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
 mL[0].initControlButtons(mB,mout,push.grid[0][2],push.grid[1][2],push.grid[2][2]);
+mL[1].initControlButtons(mB,mout,push.grid[4][7],push.grid[5][7],push.grid[6][7]);
 
 spork ~ midiIn();
-for(int i;i<mL.cap();i++){
-    spork~loopLoop(i);
-}
+for(int i;i<mL.cap();i++) spork~loopLoop(i);
 spork~displayClock();
 
 chout<="Ready!"<=IO.nl();
@@ -77,9 +76,7 @@ fun void midiIn(){
                 cold.checkNote(msg);
                 sweet.checkNote(msg);
                 worm.checkNote(msg);
-                for(int i;i<mL.cap();i++){
-                    mL[i].addMsg(msg);
-                }
+                for(int i;i<mL.cap();i++) mL[i].addMsg(msg);
             }
         }
     }
@@ -107,6 +104,7 @@ fun void loopLoop(int l){
     while(mL[l].curMsg=>now){
         if(!mL[l].recording){
             amen.checkNote(mL[l].curMsg.msg);
+            worm.checkNote(mL[l].curMsg.msg);
         }
     }
 }
@@ -147,8 +145,7 @@ fun void initCold(){
     cold.addPad("cold_sweat/snarelet.aif", push.grid[4][1]);
     cold.addPad("cold_sweat/rush2.aif", push.grid[5][1]);
     cold.addPad("cold_sweat/rush1.aif", push.grid[6][1]);
-    //1 => cold.sustain[5];
-    //1 => cold.sustain[6];
+    1 => cold.sustain[5] => cold.sustain[6];
     cold.addPad("cold_sweat/ride.aif", push.grid[7][1]);
 }
 
@@ -160,8 +157,7 @@ fun void initSweet(){
     sweet.addPad("sweet_pea/snarelet.aif", push.grid[4][3]);
     sweet.addPad("sweet_pea/rush2.aif", push.grid[5][3]);
     sweet.addPad("sweet_pea/rush1.aif", push.grid[6][3]);
-    //1 => sweet.sustain[5];
-    //1 => sweet.sustain[6];
+    1 => sweet.sustain[5] => sweet.sustain[6];
     sweet.addPad("sweet_pea/kicklet.aif", push.grid[7][3]);
 }
 
@@ -176,13 +172,13 @@ fun void initWorm(){
     worm.addPad("synths/super_sharp_worm.wav", push.grid[5][5]);
     worm.addPad("synths/super_sharp_worm.wav", push.grid[6][5]);
     worm.addPad("synths/super_sharp_worm.wav", push.grid[7][5]);
-    for(4 =>int i; i<8; i++) worm.pads[i].sampler.pitch(0,60+i);
+    for(4 =>int i; i<8; i++) worm.pads[i].sampler.pitch(0,60+i+1);
 
     worm.addPad("synths/super_sharp_worm.wav", push.grid[4][6]);
     worm.addPad("synths/super_sharp_worm.wav", push.grid[5][6]);
     worm.addPad("synths/super_sharp_worm.wav", push.grid[6][6]);
     worm.addPad("synths/super_sharp_worm.wav", push.grid[7][6]);
-    for(8 =>int i; i<12; i++) worm.pads[i].sampler.pitch(0,60+i);
+    for(8 =>int i; i<12; i++) worm.pads[i].sampler.pitch(0,60+i+2);
     
     for(int i; i<worm.pads.cap(); i++) 1 => worm.sustain[i];
 }
