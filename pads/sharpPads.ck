@@ -13,7 +13,7 @@ orec.port(98765);
 orec.event("/c,f")@=>OscEvent clockMsg;
 orec.listen();
 
-Impulse metro=>ResonZ rez=>dac;
+Impulse metro=>ResonZ rez;//=>dac;
 200=>rez.freq;
 50=>rez.Q;
 1=>metro.gain;
@@ -233,6 +233,8 @@ fun void initAcBass(){
 	acBass.addPad("AcBass/lo2.wav", push.grid[6][7]);
 	acBass.addPad("AcBass/hi.wav",  push.grid[7][7]);
 	for(int i;i<acBass.pads.cap();i++){
+		acBass.pads[i].sampler.buf[0].startPhase(0.01);
+		acBass.pads[i].sampler.buf[0].endPhase(0.4);
 		if(i>2){
 			acBass.pads[i].sampler.pitch(0,66);
 		}

@@ -29,7 +29,7 @@ public class PadGroup{
                 		for(int j;j<pads.cap();j++){
                 			if(i!=j&pads[j].sampler.isPlaying(0)){
                 				pads[j].sampler.stop(0);
-                				chout<="Stop "<=j<=IO.nl();
+                				//chout<="Stop "<=j<=IO.nl();
 							}
                 		}
                 		100::samp=>now;
