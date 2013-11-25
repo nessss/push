@@ -14,10 +14,10 @@ orec.listen();
 //Metro
 Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
-1=>rez.Q;
-10=>metro.gain;
+7=>rez.Q;
+.5=>metro.gain;
 
-MidiLooper mL[2];
+MidiLooper mL[3];
 for(int i;i<mL.cap();i++){
     mL[i].init();
     32=>mL[i].clockDiv;
@@ -33,9 +33,17 @@ for(int i;i<8;i++)       //sets default off colors?
     send(0x90,push.sel[i][1],push.rainbow(i,1));
 
 PadGroup amen;
-amen.grpBus => Pan2 master => dac;  
+amen.grpBus => Pan2 amenBus => Pan2 master => dac;  
 amen.init(push.rainbow(0,1),push.rainbow(1,1)); //init pad group
 initAmen();
+
+PadGroup slowAmen;
+slowAmen.grpBus => amenBus => master => dac;  
+slowAmen.init(push.rainbow(0,1),push.rainbow(7,1)); //init pad group
+initSlowAmen();
+
+0.1 => amenBus.gain;
+.3 => master.gain;
 
 PadGroup cold;
 cold.grpBus => master => dac;
@@ -58,6 +66,7 @@ mB.init("Ableton Push User Port");
 
 mL[0].initControlButtons(mB,mout,push.grid[0][2],push.grid[1][2],push.grid[2][2]);
 mL[1].initControlButtons(mB,mout,push.grid[4][7],push.grid[5][7],push.grid[6][7]);
+mL[2].initControlButtons(mB,mout,push.grid[0][6],push.grid[1][6],push.grid[2][6]);
 
 spork ~ midiIn();
 for(int i;i<mL.cap();i++) spork~loopLoop(i);
@@ -69,11 +78,13 @@ while(samp=>now);
 
 
 fun void midiIn(){
+    MidiMsg msg;
     while(mB.mev => now){
-        copyMsg(mB.mev.msg) @=> MidiMsg msg;
+        copyMsg(mB.mev.msg) @=> msg;
         if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
             if(msg.data2>35 & msg.data2<100){
                 amen.checkNote(msg);
+                slowAmen.checkNote(msg);
                 cold.checkNote(msg);
                 sweet.checkNote(msg);
                 worm.checkNote(msg);
@@ -91,7 +102,6 @@ fun MidiMsg copyMsg(MidiMsg inMsg){
     return outMsg;
 }
     
-
 fun void send(int d1,int d2,int d3){
     MidiMsg msg;
     d1=>msg.data1;
@@ -100,11 +110,11 @@ fun void send(int d1,int d2,int d3){
     mout.send(msg);
 }
 
-
 fun void loopLoop(int l){
     while(mL[l].curMsg=>now){
         if(!mL[l].recording){
             amen.checkNote(mL[l].curMsg.msg);
+            slowAmen.checkNote(mL[l].curMsg.msg);
             worm.checkNote(mL[l].curMsg.msg);
         }
     }
@@ -138,17 +148,19 @@ fun void initAmen(){
     amen.addPad("amen/crash.aif", push.grid[3][2]);
 }
 
-fun void initAmen(){
-    amen.addPad("amen/snare.aif", push.grid[0][0]); 
-    amen.addPad("amen/kick.aif", push.grid[1][0]); 
-    amen.addPad("amen/snare.aif", push.grid[2][0]); 
-    amen.addPad("amen/kick.aif", push.grid[3][0]); 
+fun void initSlowAmen(){
+    slowAmen.addPad("amen/snare.aif", push.grid[0][4]); 
+    slowAmen.addPad("amen/kick.aif", push.grid[1][4]); 
+    slowAmen.addPad("amen/snare.aif", push.grid[2][4]); 
+    slowAmen.addPad("amen/kick.aif", push.grid[3][4]); 
     
-    amen.addPad("amen/snarelet.aif", push.grid[0][1]); 
-    amen.addPad("amen/kicklet2.aif", push.grid[1][1]); 
-    amen.addPad("amen/kicklet1.aif", push.grid[2][1]); 
-    amen.addPad("amen/ride.aif", push.grid[3][1]); 
-    amen.addPad("amen/crash.aif", push.grid[3][2]);
+    slowAmen.addPad("amen/snarelet.aif", push.grid[0][5]); 
+    slowAmen.addPad("amen/kicklet2.aif", push.grid[1][5]); 
+    slowAmen.addPad("amen/kicklet1.aif", push.grid[2][5]); 
+    slowAmen.addPad("amen/ride.aif", push.grid[3][5]); 
+    slowAmen.addPad("amen/crash.aif", push.grid[3][6]);
+    for(int i; i<slowAmen.pads.cap(); i++)
+        slowAmen.pads[i].sampler.pitch(0,50);
 }
 
 fun void initCold(){
@@ -177,10 +189,10 @@ fun void initSweet(){
 }
 
 fun void initWorm(){
-    worm.addPad("worm", push.grid[4][4]);
-    worm.addPad("worm", push.grid[5][4]);
-    worm.addPad("worm", push.grid[6][4]);
-    worm.addPad("worm", push.grid[7][4]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[4][4]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[5][4]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[6][4]);
+    worm.addPad("synths/super_sharp_worm.wav", push.grid[7][4]);
     for(0=>int i; i<4; i++) worm.pads[i].sampler.pitch(0,60+i);
 
     worm.addPad("synths/super_sharp_worm.wav", push.grid[4][5]);
