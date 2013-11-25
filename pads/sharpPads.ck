@@ -5,17 +5,17 @@ push.clearDisplay();
 MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
-Clock clock;
-clock.init(170);
+//Clock clock;
+//clock.init(170);
 
 OscRecv orec;
 orec.port(98765);
 orec.event("/c,f")@=>OscEvent clockMsg;
 orec.listen();
 
-Impulse metro=>ResonZ rez;//=>dac;
+Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
-50=>rez.Q;
+1=>rez.Q;
 1=>metro.gain;
 
 MidiLooper mL[4];
