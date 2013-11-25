@@ -5,8 +5,9 @@ push.clearDisplay();
 MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
-//Clock clock;
-//clock.init(170);
+
+Clock clock;
+clock.init(170);
 
 OscRecv orec;
 orec.port(98765);
@@ -31,18 +32,19 @@ Shred blinkShred[4];
 MidiOut mout;
 mout.open("Ableton Push User Port");
 
+for(int i;i<64;i++)
+	send(0x90,36+i,0);
+	
 mL[0].initControlButtons(mB,mout,push.grid[4][4],push.grid[5][4],push.grid[5][3]);
 mL[1].initControlButtons(mB,mout,push.grid[6][4],push.grid[7][4],push.grid[7][3]);
 mL[2].initControlButtons(mB,mout,push.grid[4][2],push.grid[5][2],push.grid[6][2]);
 mL[3].initControlButtons(mB,mout,push.grid[5][0],push.grid[6][0],push.grid[7][0]);
 
-for(int i;i<64;i++)
-	send(0x90,36+i,0);
-
 for(int i;i<8;i++)
 	send(0x90,push.sel[i][1],push.rainbow(i,1));
 
 PadGroup spell;
+spell.grpBus.gain(0.6);
 spell.grpBus => Pan2 master => dac;  
 spell.init(push.rainbow(3,1),push.rainbow(5,1)); //init pad group
 1=>spell.choke;
@@ -69,6 +71,7 @@ initCheckIt();
 checkIt.pads[10].sampler.buf[0].startPhase(0.05);
 
 PadGroup sharp;
+sharp.grpBus.gain(0.6);
 sharp.grpBus => master;
 sharp.init(push.rainbow(4,1),push.rainbow(6,1));
 1=>sharp.choke;
@@ -88,17 +91,20 @@ chout<="Ready!"<=IO.nl();
 while(samp=>now);
 
 fun void midiIn(){
-    while(mB.mev => now){
-        copyMsg(mB.mev.msg) @=> MidiMsg msg;
-        if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
-            if(msg.data2>35 & msg.data2<100){
-                spell.checkNote(msg);
-                acBass.checkNote(msg);
-                sharp.checkNote(msg);
-                checkIt.checkNote(msg);
-                for(int i;i<mL.cap();i++){
-                    mL[i].addMsg(msg);
-                }
+    while(min => now){
+    	while(min.recv(MidiMsg msg)){
+        	if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
+            	if(msg.data2>35 & msg.data2<100){
+                	spell.checkNote(msg);
+                	acBass.checkNote(msg);
+                	sharp.checkNote(msg);
+                	checkIt.checkNote(msg);
+                	for(int i;i<mL.cap();i++){
+                		if(mL[i].recording){
+                    		mL[i].addMsg(msg);
+                    	}
+                	}
+               	}
             }
         }
     }
@@ -233,8 +239,8 @@ fun void initAcBass(){
 	acBass.addPad("AcBass/lo2.wav", push.grid[6][7]);
 	acBass.addPad("AcBass/hi.wav",  push.grid[7][7]);
 	for(int i;i<acBass.pads.cap();i++){
-		acBass.pads[i].sampler.buf[0].startPhase(0.01);
-		acBass.pads[i].sampler.buf[0].endPhase(0.4);
+		//acBass.pads[i].sampler.buf[0].startPhase(0.01);
+		//acBass.pads[i].sampler.buf[0].endPhase(0.4);
 		if(i>2){
 			acBass.pads[i].sampler.pitch(0,66);
 		}
