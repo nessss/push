@@ -4,6 +4,7 @@ push.clearDisplay();
 
 Clock clock;
 clock.init(170);
+clock.initNetOsc("portocat.local", 98765);
 
 OscRecv orec;
 orec.port(98765);
@@ -13,7 +14,7 @@ orec.listen();
 //Metro
 Impulse metro=>ResonZ rez=>dac;
 200=>rez.freq;
-50=>rez.Q;
+1=>rez.Q;
 10=>metro.gain;
 
 MidiLooper mL[2];
@@ -137,6 +138,19 @@ fun void initAmen(){
     amen.addPad("amen/crash.aif", push.grid[3][2]);
 }
 
+fun void initAmen(){
+    amen.addPad("amen/snare.aif", push.grid[0][0]); 
+    amen.addPad("amen/kick.aif", push.grid[1][0]); 
+    amen.addPad("amen/snare.aif", push.grid[2][0]); 
+    amen.addPad("amen/kick.aif", push.grid[3][0]); 
+    
+    amen.addPad("amen/snarelet.aif", push.grid[0][1]); 
+    amen.addPad("amen/kicklet2.aif", push.grid[1][1]); 
+    amen.addPad("amen/kicklet1.aif", push.grid[2][1]); 
+    amen.addPad("amen/ride.aif", push.grid[3][1]); 
+    amen.addPad("amen/crash.aif", push.grid[3][2]);
+}
+
 fun void initCold(){
     cold.addPad("cold_sweat/snare.aif", push.grid[4][0]);
     cold.addPad("cold_sweat/kick.aif", push.grid[5][0]);
@@ -147,6 +161,7 @@ fun void initCold(){
     cold.addPad("cold_sweat/rush1.aif", push.grid[6][1]);
     1 => cold.sustain[5] => cold.sustain[6];
     cold.addPad("cold_sweat/ride.aif", push.grid[7][1]);
+    
 }
 
 fun void initSweet(){
