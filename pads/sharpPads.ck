@@ -26,6 +26,9 @@ hpBus.right=>dac.chan(3);
 
 master=>hpBus;
 
+Pan2 pg0bus=>master;
+Pan2 pg1bus=>master;
+
 Impulse metro=>ResonZ rez=>hpBus;
 rez=>dac.chan(3);
 200=>rez.freq;
@@ -58,7 +61,7 @@ for(int i;i<8;i++)
 
 PadGroup spell;
 spell.grpBus.gain(0.6);
-spell.grpBus => master;  
+spell.grpBus => pg0bus;  
 spell.init(push.rainbow(3,1),push.rainbow(5,1)); //init pad group
 1=>spell.choke;
 initSpell();
@@ -68,13 +71,13 @@ for(int i;i<spell.pads.cap();i++){
 }
 
 PadGroup acBass;
-acBass.grpBus => master;
+acBass.grpBus => pg0bus;
 acBass.init(48,69);
 1=>acBass.choke;
 initAcBass(); 
 
 PadGroup checkIt;
-checkIt.grpBus => master;
+checkIt.grpBus => pg0bus;
 checkIt.init(push.rainbow(0,1),push.rainbow(1,1));
 1=>checkIt.choke;
 initCheckIt();
@@ -85,7 +88,7 @@ checkIt.pads[10].sampler.buf[0].startPhase(0.05);
 
 PadGroup sharp;
 sharp.grpBus.gain(0.6);
-sharp.grpBus => master;
+sharp.grpBus => pg0bus;
 sharp.init(push.rainbow(4,1),push.rainbow(6,1));
 1=>sharp.choke;
 initSharp();
@@ -116,6 +119,10 @@ fun void midiIn(){
                 		if(mL[i].recording){
                     		mL[i].addMsg(msg);
                     	}
+                	}
+                	for(int i;i<mL.cap();i++){
+                		if(mL[i].waitingForDownbeat)
+                			mL[i].addDbMsg(msg);
                 	}
                	}
             }
