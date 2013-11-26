@@ -17,6 +17,9 @@ Impulse metro=>ResonZ rez=>dac;
 7=>rez.Q;
 .5=>metro.gain;
 
+MidiIn min;
+min.open("Ableton Push User Port");
+
 MidiLooper mL[3];
 for(int i;i<mL.cap();i++){
     mL[i].init();
@@ -79,17 +82,18 @@ while(samp=>now);
 
 fun void midiIn(){
     //MidiMsg msg;
-    while(mB.mev => now){
-        copyMsg(mB.mev.msg) @=> MidiMsg msg;
-        if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
-            if(msg.data2>35 & msg.data2<100){
-                amen.checkNote(msg);
-                slowAmen.checkNote(msg);
-                cold.checkNote(msg);
-                sweet.checkNote(msg);
-                worm.checkNote(msg);
-                for(int i;i<mL.cap();i++) mL[i].addMsg(msg);
-            }
+    while(min => now){
+    	while(min.recv(MidiMsg msg)){
+        	if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
+            	if(msg.data2>35 & msg.data2<100){
+                	amen.checkNote(msg);
+                	slowAmen.checkNote(msg);
+                	cold.checkNote(msg);
+                	sweet.checkNote(msg);
+                	worm.checkNote(msg);
+                	for(int i;i<mL.cap();i++) mL[i].addMsg(msg);
+            	}
+        	}
         }
     }
 }
