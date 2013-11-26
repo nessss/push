@@ -28,7 +28,7 @@ public class PadGroup{
                 	if(choke){
                 		for(int j;j<pads.cap();j++){
                 			if(i!=j&pads[j].sampler.isPlaying(0)){
-                				pads[j].sampler.stop(0);
+                				pads[j].sampler.choke(0);
                 				//chout<="Stop "<=j<=IO.nl();
 							}
                 		}
@@ -39,7 +39,7 @@ public class PadGroup{
                 }
                 else if(msg.data1==0x80){ 
                 	if(sustain[i])
-                		pads[i].sampler.stop(0);
+                		pads[i].sampler.choke(0);
                     mou.midiOut(144, msg.data2, offClr);
                 }
             }
