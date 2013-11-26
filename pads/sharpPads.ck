@@ -97,7 +97,7 @@ spork ~ midiIn();
 for(int i;i<mL.cap();i++){
 	spork~loopLoop(i);
 }
-spork~displayClock();
+spork~displayMetro();
 
 chout<="Ready!"<=IO.nl();
 
@@ -204,7 +204,7 @@ fun void loopLoop(int l){
     }
 }
 
-fun void displayClock(){
+fun void displayMetro(){
 	int i;
 	while(clockMsg=>now){
 		while(clockMsg.nextMsg()){
