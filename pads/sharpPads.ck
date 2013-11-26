@@ -5,6 +5,7 @@ push.clearDisplay();
 MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
+int myPage;
 int clockTown;
 if(clockTown){
 	Clock clock;
@@ -48,16 +49,28 @@ Shred blinkShred[4];
 MidiOut mout;
 mout.open("Ableton Push User Port");
 
-for(int i;i<64;i++)
-	send(0x90,36+i,0);
-	
+clearPads();
+fun void clearPads(){
+	for(int i;i<64;i++)
+		send(0x90,36+i,0);
+}
+
 mL[0].initControlButtons(mB,mout,push.grid[4][4],push.grid[5][4],push.grid[5][3]);
 mL[1].initControlButtons(mB,mout,push.grid[6][4],push.grid[7][4],push.grid[7][3]);
 mL[2].initControlButtons(mB,mout,push.grid[4][2],push.grid[5][2],push.grid[6][2]);
 mL[3].initControlButtons(mB,mout,push.grid[5][0],push.grid[6][0],push.grid[7][0]);
 
 for(int i;i<8;i++)
-	send(0x90,push.sel[i][1],push.rainbow(i,1));
+	send(0xb0,push.sel[i][1],push.rainbow(i,1));
+
+fun void pageLight(int p){
+	for(int i;i<8;i++){
+		if(i==p)
+			send(0xb0,push.sel[i][0],19);
+		else
+			send(0xb0,push.sel[i][0],0);
+	}
+}
 
 PadGroup spell;
 spell.grpBus.gain(0.6);
@@ -93,6 +106,11 @@ sharp.init(push.rainbow(4,1),push.rainbow(6,1));
 1=>sharp.choke;
 initSharp();
 
+Sampler bass;
+bass.init("synBass.wav");
+
+
+
 MidiIn min; 
 min.open("Ableton Push User Port");
 
@@ -110,24 +128,66 @@ fun void midiIn(){
     while(min => now){
     	while(min.recv(MidiMsg msg)){
         	if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
-            	if(msg.data2>35 & msg.data2<100){
-                	spell.checkNote(msg);
-                	acBass.checkNote(msg);
-                	sharp.checkNote(msg);
-                	checkIt.checkNote(msg);
-                	for(int i;i<mL.cap();i++){
-                		if(mL[i].recording){
-                    		mL[i].addMsg(msg);
-                    	}
-                	}
-                	for(int i;i<mL.cap();i++){
-                		if(mL[i].waitingForDownbeat)
-                			mL[i].addDbMsg(msg);
-                	}
-               	}
+    			if(myPage==0){
+            		if(msg.data2>35 & msg.data2<100){
+                		spell.checkNote(msg);
+                		acBass.checkNote(msg);
+                		sharp.checkNote(msg);
+                		checkIt.checkNote(msg);
+                		for(int i;i<mL.cap();i++){
+                			if(mL[i].recording){
+                    			mL[i].addMsg(msg);
+                    		}
+                		}
+                		for(int i;i<mL.cap();i++){
+                			if(mL[i].waitingForDownbeat)
+                				mL[i].addDbMsg(msg);
+                		}
+               		}
+            	}else if(myPage==1){
+            		
+            	}
+            }else if(msg.data1==0xb0){
+            	if(msg.data2>=20&msg.data2<=27){
+            		if(msg.data3)
+            			page(msg.data2-20);
+            	}
             }
-        }
-    }
+    	}
+	}
+}
+
+
+fun void lightPads(){
+	for(int i;i<spell.pads.cap();i++)
+		send(0x90,spell.pads[i].noteNum,spell.offClr);
+	for(int i;i<acBass.pads.cap();i++)
+		send(0x90,acBass.pads[i].noteNum,acBass.offClr);
+	for(int i;i<sharp.pads.cap();i++)
+		send(0x90,sharp.pads[i].noteNum,sharp.offClr);
+	for(int i;i<checkIt.pads.cap();i++)
+		send(0x90,checkIt.pads[i].noteNum,checkIt.offClr);
+	for(int i;i<mL.cap();i++){
+		mL[i].lights(mout);
+	}
+}
+
+fun void page(int p){
+	if(p>=0&p<2)
+		pageLight(p);
+	if(p==0){
+		0=>myPage;
+		lightPads();
+		for(int i;i<mL.cap();i++)
+			1=>mL[i].focus;
+	}
+		
+	if(p==1){
+		1=>myPage;
+		clearPads();
+		for(int i;i<mL.cap();i++)
+			0=>mL[i].focus;
+	}
 }
 
 fun void oldMidiIn(){
