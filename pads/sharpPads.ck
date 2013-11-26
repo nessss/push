@@ -5,18 +5,31 @@ push.clearDisplay();
 MidiBroadcaster mB;
 mB.init("Ableton Push User Port");
 
-
-Clock clock;
-clock.init(170);
+int clockTown;
+if(clockTown){
+	Clock clock;
+	clock.init(170);
+}
 
 OscRecv orec;
 orec.port(98765);
 orec.event("/c,f")@=>OscEvent clockMsg;
 orec.listen();
 
-Impulse metro=>ResonZ rez=>dac;
+Pan2 master;
+master.left=>dac.chan(0);
+master.right=>dac.chan(1);
+
+Pan2 hpBus;
+hpBus.left=>dac.chan(2);
+hpBus.right=>dac.chan(3);
+
+master=>hpBus;
+
+Impulse metro=>ResonZ rez=>hpBus;
+rez=>dac.chan(3);
 200=>rez.freq;
-1=>rez.Q;
+15=>rez.Q;
 1=>metro.gain;
 
 MidiLooper mL[4];
@@ -45,7 +58,7 @@ for(int i;i<8;i++)
 
 PadGroup spell;
 spell.grpBus.gain(0.6);
-spell.grpBus => Pan2 master => dac;  
+spell.grpBus => master;  
 spell.init(push.rainbow(3,1),push.rainbow(5,1)); //init pad group
 1=>spell.choke;
 initSpell();
@@ -196,12 +209,18 @@ fun void displayClock(){
 	while(clockMsg=>now){
 		while(clockMsg.nextMsg()){
 			clockMsg.getFloat()$int=>int val;
-			(val%8)=>i;
-			Std.itoa((val/8)%4)=>string clockValue;
+			(val%4)=>i;
+			(val/8)%4=>int beat;
+			Std.itoa(beat)=>string clockValue;
 			push.subsegment(7,3,clockValue);
 			push.updateLine(3);
-			if(i==0)
+			if(i==0){
+				if(!((val/4)%8))
+					400=>rez.freq;
+				else
+					200=>rez.freq;
 				200=>metro.next;
+			}
 		}
 	}
 }
