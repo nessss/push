@@ -108,8 +108,7 @@ initSharp();
 
 Sampler bass;
 bass.init("synBass.wav");
-
-
+bass.output=>pg1bus;
 
 MidiIn min; 
 min.open("Ableton Push User Port");
@@ -124,7 +123,11 @@ chout<="Ready!"<=IO.nl();
 
 while(samp=>now);
 
+fun int gridToPitch(int g){
+	return 36+(push.gridX(g)+5*push.gridY(g));
+}
 fun void midiIn(){
+    int v;
     while(min => now){
     	while(min.recv(MidiMsg msg)){
         	if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
@@ -145,7 +148,17 @@ fun void midiIn(){
                 		}
                		}
             	}else if(myPage==1){
-            		
+            		if(msg.data1==0x90){
+            			bass.pitch(0,gridToPitch(msg.data2));
+            			bass.trigger(0);
+            			v++;
+            		}
+            		else{
+            			v--;
+            			if(v==0)
+            				bass.buf[0].stop();
+            		}
+            		chout<=v<=IO.nl();
             	}
             }else if(msg.data1==0xb0){
             	if(msg.data2>=20&msg.data2<=27){
