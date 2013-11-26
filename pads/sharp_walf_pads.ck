@@ -4,7 +4,7 @@ push.clearDisplay();
 
 Clock clock;
 clock.init(170);
-clock.initNetOsc("portocat.local", 98765);
+//clock.initNetOsc("portocat.local", 98765);
 
 OscRecv orec;
 orec.port(98765);
@@ -78,9 +78,9 @@ while(samp=>now);
 
 
 fun void midiIn(){
-    MidiMsg msg;
+    //MidiMsg msg;
     while(mB.mev => now){
-        copyMsg(mB.mev.msg) @=> msg;
+        copyMsg(mB.mev.msg) @=> MidiMsg msg;
         if(msg.data1 == 0x90 | msg.data1 == 0x80){ 
             if(msg.data2>35 & msg.data2<100){
                 amen.checkNote(msg);
