@@ -12,12 +12,10 @@ orec.event("/c,f")@=>OscEvent clockMsg;
 orec.listen();
 
 //Metro
-Impulse metro=>ResonZ rez=>dac.chan(7);
-rez => dac.chan(8);
+Impulse metro=>ResonZ rez=> Gain metroBus;
 200=>rez.freq;
-7=>rez.Q;
-.5=>metro.gain;
-
+15=>rez.Q;
+2 => rez.gain;
 MidiIn min;
 min.open("Ableton Push User Port");
 
@@ -36,28 +34,50 @@ for(int i;i<64;i++)    //clears pads
 for(int i;i<8;i++)       //sets default off colors?
     send(0x90,push.sel[i][1],push.rainbow(i,1));
 
+Dyno comp;
+comp.compress();
+.8 => comp.thresh;
+4::ms => comp.attackTime;
+200::ms => comp.releaseTime;
+
 PadGroup amen;
-amen.grpBus => Pan2 amenBus => Pan2 master; 
+amen.grpBus => Pan2 amenBus => comp => Pan2 master; 
 master.left => dac.chan(0);
 master.right => dac.chan(1);  
 amen.init(push.rainbow(0,1),push.rainbow(1,1)); //init pad group
 initAmen();
 
+master => Pan2 cueBus;
+cueBus.left => dac.chan(8);
+cueBus.right => dac.chan(9);
+.5 => cueBus.gain;
+metroBus => cueBus;
 PadGroup slowAmen;
 slowAmen.grpBus => amenBus;
 slowAmen.init(push.rainbow(0,1),push.rainbow(7,1)); //init pad group
 initSlowAmen();
 
-.4 => amenBus.gain;
-.7 => master.gain;
+.55 => amenBus.gain;
+.9 => master.gain;
+//.8 =>metro.gain;
+.7 => metro.gain;
+
+Pan2 nessCue;
+adc.chan(2) => nessCue.left;
+adc.chan(3) => nessCue.right;
+nessCue => cueBus;
+master.left => dac.chan(2);
+master.right => dac.chan(3);
 
 PadGroup cold;
-cold.grpBus => master;
+cold.grpBus => Pan2 coldBus => comp;
 cold.init(push.rainbow(0,1),push.rainbow(4,1));
 initCold();
 
+1 => coldBus.gain;
+
 PadGroup sweet;
-sweet.grpBus => master;
+sweet.grpBus => comp;
 sweet.init(push.rainbow(0,1),push.rainbow(6,1));
 initSweet();
 
@@ -65,6 +85,7 @@ PadGroup worm;
 worm.grpBus => master;
 worm.init(push.rainbow(0,1),push.rainbow(3,1));
 initWorm();
+1=>worm.choke;
 
 
 MidiBroadcaster mB;
@@ -76,7 +97,7 @@ mL[2].initControlButtons(mB,mout,push.grid[0][6],push.grid[1][6],push.grid[2][6]
 
 spork ~ midiIn();
 for(int i;i<mL.cap();i++) spork~loopLoop(i);
-spork~displayClock();
+spork~displayMetro();
 
 chout<="Ready!"<=IO.nl();
 
@@ -95,6 +116,12 @@ fun void midiIn(){
                     sweet.checkNote(msg);
                     worm.checkNote(msg);
                     for(int i;i<mL.cap();i++) mL[i].addMsg(msg);
+                    for(int i;i<mL.cap();i++){
+                        if(mL[i].waitingForDownbeat){
+                            if(msg.data1==0x90)
+                                mL[i].addDbMsg(msg);
+                        }
+                    }
                 }
             }
         }
@@ -128,17 +155,23 @@ fun void loopLoop(int l){
 }
 
 
-fun void displayClock(){
+fun void displayMetro(){
     int i;
     while(clockMsg=>now){
         while(clockMsg.nextMsg()){
             clockMsg.getFloat()$int=>int val;
-            (val%2)=>i;
-            Std.itoa((val/8)%4)=>string clockValue;
+            (val%4)=>i;
+            (val/8)%4=>int beat;
+            Std.itoa(beat)=>string clockValue;
             push.subsegment(7,3,clockValue);
             push.updateLine(3);
-            if(i==0)
+            if(i==0){
+                if(!((val/4)%4))
+                    400=>rez.freq;
+                else
+                    200=>rez.freq;
                 200=>metro.next;
+            }
         }
     }
 }
